@@ -21,3 +21,33 @@ function logError($log=null)
     }
     return false;
 }
+
+function organizeMessage($bdd, $result)
+{
+    $messages = array();
+    $lastMessageID = 0;
+    
+    if (length($result) > 0)
+    {
+        $lastMessageID = $result[0]['messageID']
+        $req = $bdd->prepare('SELECT name FROM user WHERE `ID` = ?1');
+
+        foreach ($result as $row) 
+        {
+            $req->execute(array('?1' => $row['userID']));
+            $messages[] = array(
+                'messageText' => $row["messageText"],
+                'user' => ($req2->fetch())['name'],
+                'time' => $row['time']
+                )
+        }
+        $req->closeCursor();
+    }
+
+    $chatBox = array(
+        "lastMessage" => $lastMessageID,
+        "messages" => array_reverse($messages)
+        );
+
+    return json_encode($chatBox);
+}
