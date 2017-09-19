@@ -48,7 +48,7 @@ function registerGenre($genreName = "")
     $data = $req->fetch();
 	$req->closeCursor();
 
-    return $data;
+    return $data['genreID'];
 }
 
 function hasGenre($genreID = 0)
@@ -68,6 +68,24 @@ function hasGenre($genreID = 0)
     return $data != 0;
 }
 
+function getGenreForID($songID, $bdd = null)
+{
+	if($bdd == null)
+	{
+		$bdd = connectDB();
+		if($bdd == null)
+			return false;
+	}
+
+	$req = $bdd->prepare('SELECT `genreID` FROM `music` WHERE `ID` = ?1');
+	$req->execute(array('?1' => $songID));
+	$data = $req->fetch();
+	$req->closeCursor();
+
+	return $data['genreID'];
+
+}
+
 function registerSong($filename = "", $artistName = "", $trackName = "", $genreID = 0)
 {
     if(empty($filename) || empty($artistName) || empty($trackName) || empty($genreID))
@@ -83,4 +101,69 @@ function registerSong($filename = "", $artistName = "", $trackName = "", $genreI
 	$req->closeCursor();
 
     return $out == true;
+}
+
+function getRandomSong()
+{
+	$bdd = connectDB();
+	if($bdd == null)
+		return false;
+
+	//We're trying to get a random ID from the database
+	//SORT RAND() LIMIT 1 would work but may become a bottleneck later on
+	//http://jan.kneschke.de/projects/mysql/order-by-rand/ describes the alternative method used there
+	//For the sake of complexity, we don't try to get a clean distribution, meaning that deleted song will
+	//      increase the odds that the one after it get selected. If too big of a problem, those IDs aren't
+	//      used elsewhere and can be recomputed whenever necessary, as long as the application is down.
+
+	$req = $bdd->prepare('SELECT `ID`
+		FROM `music` AS r1 JOIN
+		   (SELECT (RAND() *
+		                 (SELECT MAX(ID)
+		                    FROM `music`)) AS ID)
+		    AS r2
+		WHERE r1.ID >= r2.ID
+		ORDER BY r1.ID ASC LIMIT 1;');
+
+	if($req->execute())
+	{
+		$data = $req->fetch();
+		$output = $data['ID'];
+	}
+	else
+		$output = -1;
+
+	$req->closeCursor();
+	return $output;
+}
+
+function getNbSongs()
+{
+	$bdd = connectDB();
+	if($bdd == null)
+		return false;
+
+	$req = $bdd->prepare('SELECT COUNT() FROM `music`');
+	$req->execute();
+	$data = $req->fetch();
+	$req->closeCursor();
+
+	return $data;
+}
+
+function getCloseRelativeSong($songID, $maxReturn)
+{
+	$bdd = connectDB();
+	if($bdd == null)
+		return false;
+
+	$genre = getGenreForID($songID);
+
+	$req = $bdd->prepare('SELECT `ID` FROM `music` WHERE `genreID` == ?genre AND `ID` != ?songID');
+	$req->execute(array());
+	$data = $req->fetch();
+	$req->closeCursor();
+
+	return $data;
+
 }
