@@ -1,7 +1,7 @@
 <template>
   <div class="answer-button">
-    <h1 v-if="toggle">{{ msg }}</h1>
     <button v-on:click="displayToggle()">toggle</button>
+    <h1 v-if="toggle">{{ msg }}</h1>
   </div>
 </template>
 
