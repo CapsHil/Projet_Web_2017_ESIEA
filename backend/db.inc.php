@@ -83,7 +83,6 @@ function getGenreForID($songID, $bdd = null)
 	$req->closeCursor();
 
 	return $data['genreID'];
-
 }
 
 function registerSong($filename = "", $artistName = "", $trackName = "", $genreID = 0)
@@ -103,11 +102,17 @@ function registerSong($filename = "", $artistName = "", $trackName = "", $genreI
     return $out == true;
 }
 
-function getRandomSong()
+function getRandomSongs($bdd = null, $nbSongs = 1)
 {
-	$bdd = connectDB();
-	if($bdd == null)
+	if(!is_integer($nbSongs) || $nbSongs < 1)
 		return false;
+
+	if($bdd == null)
+	{
+		$bdd = connectDB();
+		if($bdd == null)
+			return false;
+	}
 
 	//We're trying to get a random ID from the database
 	//SORT RAND() LIMIT 1 would work but may become a bottleneck later on
@@ -123,7 +128,7 @@ function getRandomSong()
 		                    FROM `music`)) AS ID)
 		    AS r2
 		WHERE r1.ID >= r2.ID
-		ORDER BY r1.ID ASC LIMIT 1;');
+		ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
 
 	if($req->execute())
 	{
@@ -137,11 +142,14 @@ function getRandomSong()
 	return $output;
 }
 
-function getNbSongs()
+function getNbSongs($bdd = null)
 {
-	$bdd = connectDB();
 	if($bdd == null)
-		return false;
+	{
+		$bdd = connectDB();
+		if($bdd == null)
+			return false;
+	}
 
 	$req = $bdd->prepare('SELECT COUNT() FROM `music`');
 	$req->execute();
@@ -151,19 +159,76 @@ function getNbSongs()
 	return $data;
 }
 
-function getCloseRelativeSong($songID, $maxReturn)
+function getCloseRelativeSong($songID, $bdd = null, $maxReturn = 0)
 {
-	$bdd = connectDB();
 	if($bdd == null)
-		return false;
+	{
+		$bdd = connectDB();
+		if($bdd == null)
+			return false;
+	}
 
 	$genre = getGenreForID($songID);
 
-	$req = $bdd->prepare('SELECT `ID` FROM `music` WHERE `genreID` == ?genre AND `ID` != ?songID');
-	$req->execute(array());
+	$req = $bdd->prepare('SELECT `ID` FROM `music` WHERE `genreID` = ?genre AND `ID` != ?songID SORT RAND() '
+																		. empty($maxReturn) ? "" : "LIMIT ?max");
+	$req->execute(array('?genreID' => $genre, '?songID' => $songID, '?max' => $maxReturn));
 	$data = $req->fetch();
 	$req->closeCursor();
 
-	return $data;
+	$output = array();
 
+	foreach ($data as $entry)
+	{
+		array_push($output, $entry['ID']);
+	}
+
+	return $output;
+}
+
+function extractDataForSongs($songIDs, $bdd = null)
+{
+	if(!is_array($songIDs) || length($songIDs) == 0)
+		return array();
+
+	if($bdd == null)
+	{
+		$bdd = connectDB();
+		if($bdd == null)
+			return array();
+	}
+
+	$req = $bdd->prepare('SELECT `ID`, `trackName`, `artistName` FROM `music` WHERE `ID` = ?ID');
+
+	$output = array();
+
+	foreach ($songIDs as $song)
+	{
+		$req->execute(array('?ID' => $song));
+		$data = $req->fetch();
+
+		array_push($output, array(  "songID" => $data['ID'],
+									"trackName" => $data['trackName'],
+									"artistName" => $data['artistName']));
+
+	}
+
+	$req->closeCursor();
+}
+
+function getFileName($songID, $bdd = null)
+{
+	if($bdd == null)
+	{
+		$bdd = connectDB();
+		if($bdd == null)
+			return array();
+	}
+
+	$req = $bdd->prepare('SELECT `filename` FROM `music` WHERE `ID` = ?ID');
+	$req->execute(array('?ID' => $songID));
+	$data = $req->fetch();
+	$req->closeCursor();
+
+	return $data['filename'];
 }
