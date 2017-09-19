@@ -18,4 +18,4 @@
 #===============================================================================
 
 
-docker run --rm -v $(pwd)/webapp/src:/src -w /src -p 8080:8080 node:6 bash -c "npm install && npm run dev"
+docker run --rm --name dev -v $(pwd)/webapp/src:/src -w /src -p 8080:8080 node:6 bash -c "npm install && npm run dev"
