@@ -9,3 +9,5 @@
 $dbUserName = "";
 $dbPassword = "";
 $dbName = "mysql:host=localhost;dbname=sirius";
+
+$defaultNbSuggestions = 4;
