@@ -1,4 +1,4 @@
-# Projet Web 2017 ESIEA
+# ESIEA WEB PROJECT 2017
 ## AIL5MAJ - INF5041
 
 ### How to run in development mode
