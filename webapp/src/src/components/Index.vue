@@ -23,9 +23,3 @@
   }
 </script>
 
-<style>
-  .row {
-    padding: 10px;
-  }
-</style>
-
