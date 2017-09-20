@@ -1,6 +1,6 @@
 <template>
   <div class="play-button">
-    <button v-on:click="playSound()">{{msg}}</button>
+    <button v-on:click="startNewExtract()">{{msg}}</button>
   </div>
 </template>
 
@@ -18,8 +18,10 @@
       }
     },
     methods: {
-      playSound () {
+      startNewExtract () {
         sound.play()
+// eslint-disable-next-line spaced-comment
+        //TODO: Load next 2 songs from backend. EDIT : DEGAGE CA AU DESSUS FDP !
       }
     }
   }
