@@ -5,12 +5,13 @@
 </template>
 
 <script>
+  import buzz from 'buzz'
   export default {
     name: 'play-button',
     data () {
       return {
-        msg: 'Play'
-        /* sound: new buzz.sound("/sounds/sound", {formats: [ "ogg", "mp3", "aac" ]}) */
+        msg: 'Play',
+        sound: buzz.sound('/sound.mp3')
       }
     },
     methods: {

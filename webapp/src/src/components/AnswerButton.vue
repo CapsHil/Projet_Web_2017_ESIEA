@@ -1,8 +1,5 @@
 <template>
-  <div class="answer-button">
-    <button v-on:click="displayToggle()">toggle</button>
-    <h1 v-if="toggle">{{ msg }}</h1>
-  </div>
+    <button class="answer-button" v-on:click="displayToggle()">{{ answer }}</button>
 </template>
 
 <script>
@@ -10,14 +7,26 @@
     name: 'answer-button',
     data () {
       return {
-        msg: 'Welcome to Your Vue.js App',
-        toggle: true
+        answer: 'Answer',
+        isCorrectAnswer: true
       }
     },
     methods: {
       displayToggle () {
-        this.toggle = !this.toggle
+        if (this.isCorrectAnswer) {
+          alert('Yay! You got it!')
+        }
       }
     }
   }
 </script>
+
+<style>
+  .answer-button {
+    display: inline;
+    padding: 10px;
+    width: 300px;
+    height: 200px;
+    margin: 20px;
+  }
+</style>

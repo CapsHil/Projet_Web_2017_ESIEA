@@ -1,9 +1,15 @@
 <template>
   <div class="index">
     <h1>{{ welcome }}</h1>
-    <h1>{{ welcome }}</h1>
     <play-button></play-button>
-    <answer-button></answer-button>
+    <div class="row">
+      <answer-button></answer-button>
+      <answer-button></answer-button>
+    </div>
+    <div class="row">
+      <answer-button></answer-button>
+      <answer-button></answer-button>
+    </div>
   </div>
 </template>
 
@@ -23,4 +29,10 @@
     }
   }
 </script>
+
+<style>
+  .row {
+    padding: 10px;
+  }
+</style>
 
