@@ -206,3 +206,80 @@ function getFileName($songID, $bdd = null)
 
 	return $data['filename'];
 }
+
+//Chat management
+
+function insertMessageIntoDB($userID, $message)
+{
+	$req = connectDB()->prepare("INSERT INTO `chatbox`(`message`, `userID`) VALUES (?message, ?userID)");
+	$output = $req->execute([
+		'?message' => $message,
+		'?userID' => $userID
+	]);
+
+	$req->closeCursor();
+}
+
+//User management
+
+//The password is already hashed using password_hash
+function createUser($name, $email, $password)
+{
+	$hashedPassword = hashPasswordForUser($password);
+	if($hashedPassword === false)
+		return false;
+
+	$req = connectDB()->prepare("INSERT INTO `user`(`name`, `password`, `email`) VALUES (?name, ?password, ?email)");
+	$output = $req->execute([
+		'?name' => $name,
+		'?password' => $hashedPassword,
+		'?email' => $email
+		]);
+
+	$req->closeCursor();
+
+	return $output;
+}
+
+function validateUserPassword($name, $password)
+{
+	$req = connectDB()->prepare("SELECT `password` FROM `user` WHERE `name` = ?name");
+
+	if($req->execute(['?name' => $name]))
+	{
+		$data = $req->fetch();
+		$output = password_verify($password, $data['password']);
+	}
+	else
+		$output = false;
+
+	$req->closeCursor();
+
+	return $output;
+}
+
+function getUserIDFromName($name)
+{
+	$req = connectDB()->prepare('SELECT `ID` FROM `user` WHERE `name` = ?1');
+	$output = $req->execute(['?1' => $name]);
+
+	if($output !== false)
+	{
+		$data = $req->fetch();
+		$output = $data['ID'];
+	}
+
+	$req->closeCursor();
+
+	return $output;
+}
+
+function hasUserID($userID)
+{
+	$req = connectDB()->prepare('SELECT COUNT() FROM `user` WHERE `ID` = ?1');
+	$req->execute(['?1' => $userID]);
+	$output = $req->fetchColumn() == 1;
+	$req->closeCursor();
+
+	return $output;
+}
