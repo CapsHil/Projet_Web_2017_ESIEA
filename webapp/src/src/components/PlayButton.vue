@@ -23,9 +23,13 @@
     methods: {
       startNewExtract () {
         sound.play()
+        this.msg = 'Playing'
         sound.bind('timeupdate', function () {
           timerValue = buzz.toTimer(this.getTime())
-          console.log(timerValue)
+          if (timerValue === '00:10') {
+            this.msg = 'Play'
+            sound.stop()
+          }
         })
       }
     }
