@@ -51,10 +51,21 @@ function organizeMessage($bdd, $result)
         $req->closeCursor();
     }
 
-    $chatBox = array(
-        'lastMessage' => $lastMessageID,
-        'messages' => array_reverse($messages)
-        );
+    if(!empty($messages))
+    {
+	    $chatBox = array(
+	    	'status' => 'success',
+		    'lastMessage' => $lastMessageID,
+		    'messages' => array_reverse($messages)
+	    );
+    }
+    else
+    {
+	    $chatBox = array(
+		    'status' => 'error',
+		    'error' => 'no new message'
+	    );
+    }
 
     return json_encode($chatBox);
 }

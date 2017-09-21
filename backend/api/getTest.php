@@ -70,6 +70,7 @@
 		exit('{"status":"error","error":"could not generate output"}');
 
 	$finalOutput = array(
+		'status' => 'success',
 		'songID' => $question,
 		'filename' => "music/" . getFileName($question, $bdd),
 		'suggestions' => $processedOutput);

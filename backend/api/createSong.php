@@ -4,17 +4,17 @@ include_once("../utils.inc.php");
 
 $uploadOk = true;
 
-// Verify paramter of the song.
+// Verify parameter of the song.
 if($_REQUEST['trackName'] == "" && $_REQUEST['artist'] == "" && $_REQUEST['genre'] == "")
 {
-    logError("empty parameter:  the name : " . $_REQUEST['trackName'] . ' or the artist : ' $_REQUEST['artist'] . ' or the genre : ' . $_REQUEST['genre']);
+    logError("empty parameter:  the name : " . $_REQUEST['trackName'] . ' or the artist : ' . $_REQUEST['artist'] . ' or the genre : ' . $_REQUEST['genre']);
     $uploadOk = false;
 }
 
 do //Generate name file
 {
-    $newfilename = bin2hex(random_bytes(8));
-    $target_file = 'music/' . $newfilename;
+    $outputFileName = bin2hex(random_bytes(8));
+    $target_file = 'music/' . $outputFileName;
 
 } while(file_exists($target_file));
 
@@ -30,10 +30,10 @@ if ($uploadOk)
 {
     if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file))
     {
-        logError("The file ". $_FILES['fileToUpload']['tmp_name']). " has been uploaded  and renamed to $target_file.");
+        logError("The file ". $_FILES['fileToUpload']['tmp_name']. " has been uploaded and renamed to $target_file.");
         if(hasGenre($_REQUEST['genre']))
         {
-            registerSong($newfilename, $_REQUEST['artist'], $_REQUEST['trackName'], $_REQUEST['genre']);            
+            registerSong($outputFileName, $_REQUEST['artist'], $_REQUEST['trackName'], $_REQUEST['genre']);
         }
     }
     else
@@ -42,4 +42,7 @@ if ($uploadOk)
     }
 }
 
-return $uploadOk;
+if($uploadOk)
+	echo '{"status":"success"}';
+else
+	echo '{"status":"error", "error":"upload failed, or invalid file"}';
