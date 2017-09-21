@@ -243,12 +243,16 @@ function createUser($name, $email, $password)
 
 function validateUserPassword($name, $password)
 {
-	$req = connectDB()->prepare("SELECT `password` FROM `user` WHERE `name` = ?name");
+	$req = connectDB()->prepare("SELECT `password`, `ID` FROM `user` WHERE `name` = ?name");
 
 	if($req->execute(['?name' => $name]))
 	{
 		$data = $req->fetch();
-		$output = password_verify($password, $data['password']);
+
+		if(password_verify($password, $data['password']))
+			$output = $data['ID'];
+		else
+			$output = false;
 	}
 	else
 		$output = false;
@@ -282,4 +286,19 @@ function hasUserID($userID)
 	$req->closeCursor();
 
 	return $output;
+}
+
+function deleteUser($userID)
+{
+	if(!is_int($userID))
+		return;
+
+	$bdd = connectDB();
+
+	$req = $bdd->prepare('DELETE FROM `chatbox` WHERE `userID` = ?1;
+									DELETE FROM `highScore` WHERE `userID` = ?1; 
+									DELETE FROM `user` WHERE `ID` = ?1;');
+
+	$req->execute(['?1' => $userID]);
+	$req->closeCursor();
 }
