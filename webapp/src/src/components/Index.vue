@@ -9,6 +9,7 @@
 <script>
   import AnswerButton from './AnswerButton.vue'
   import PlayButton from './PlayButton.vue'
+
   export default {
     name: 'index',
     data () {

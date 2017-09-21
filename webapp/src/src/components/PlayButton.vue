@@ -1,12 +1,13 @@
 <template>
   <div class="play-button">
-    <div class="timer">{{timer}}</div>
-    <button v-on:click="startNewExtract()">{{msg}}</button>
+    <div class="timer">{{ timer }}</div>
+    <button v-on:click="startNewExtract()">{{ msg }}</button>
   </div>
 </template>
 
 <script>
   import buzz from 'buzz'
+  import axios from 'axios'
 
 // eslint-disable-next-line new-cap
   let sound = new buzz.sound(require('../assets/sound.mp3'))
@@ -22,6 +23,13 @@
     },
     methods: {
       startNewExtract () {
+        axios.get('http://localhost:8081/extract')
+          .then(function (response) {
+            console.log(response)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
         sound.play()
         this.msg = 'Playing'
         sound.bind('timeupdate', function () {
