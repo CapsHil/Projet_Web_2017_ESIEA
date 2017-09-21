@@ -21,3 +21,4 @@ $result = $req->fetch();
 
 echo organizeMessage($bdd, $result);
 
+$req->closeCursor();

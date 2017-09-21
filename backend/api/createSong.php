@@ -5,7 +5,7 @@ include_once("../utils.inc.php");
 $uploadOk = true;
 
 // Verify parameter of the song.
-if($_REQUEST['trackName'] == "" && $_REQUEST['artist'] == "" && $_REQUEST['genre'] == "")
+if(empty($_REQUEST['trackName']) || empty($_REQUEST['artist']) || !is_int($_REQUEST['genre']))
 {
     logError("empty parameter:  the name : " . $_REQUEST['trackName'] . ' or the artist : ' . $_REQUEST['artist'] . ' or the genre : ' . $_REQUEST['genre']);
     $uploadOk = false;
