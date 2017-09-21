@@ -7,7 +7,7 @@ include_once('utils.inc.php');
 if(is_int($_REQUEST['nbSuggestions']))
 	$nbMessages = $_REQUEST['nbSuggestions'];
 else
-	$nbMessages = $defaultNumberMessages;
+	$nbMessages = $defaultNbMessages;
 
 $bdd = connectDB();
 $req = $bdd->prepare("SELECT * FROM chatBox ORDER BY `messageID` DESC LIMIT $nbMessages");

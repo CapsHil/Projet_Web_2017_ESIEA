@@ -302,3 +302,25 @@ function deleteUser($userID)
 	$req->execute(['?1' => $userID]);
 	$req->closeCursor();
 }
+
+//High scores management
+
+function getTopScores($nbTopScores)
+{
+	$bdd = connectDB();
+	$req = $bdd->prepare('SELECT `highScore`.`score` AS score, `user`.`name` as name 
+FROM `highScore` 
+INNER JOIN `user` ON `highScore`.`userID` = `user`.`ID`
+ORDER BY `highScore`.`score`
+LIMIT ?limit');
+
+	$req->execute(['?limit' => $nbTopScores]);
+
+	$counter = 1;
+	$output = [];
+
+	while ($score = $req->fetch())
+		array_push($output, ['rank' => $counter++, 'user' => $score['name'], 'score' => $score['score']]);
+
+	return output;
+}

@@ -12,7 +12,7 @@ if(!is_int($_REQUEST['lastMaxId']))
 if(is_int($_REQUEST['nbSuggestions']))
 	$nbMessages = $_REQUEST['nbSuggestions'];
 else
-	$nbMessages = $defaultNumberMessages;
+	$nbMessages = $defaultNbMessages;
 
 $bdd = connectDB();
 $req =$bdd->prepare("SELECT * FROM chatBox WHERE `messageID` > ?lastMaxID ORDER BY `messageID` DESC LIMIT $nbMessages");
