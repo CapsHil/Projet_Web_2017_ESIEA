@@ -9,8 +9,6 @@
 	include_once ('../db.inc.php');
 
 	$bdd = connectDB();
-	if($bdd == null)
-		exit('{"error":"could not generate a song"}');
 
 	$nbEntries = getNbSongs($bdd);
 
@@ -34,7 +32,7 @@
 	//Get the ID of the song that will have to be guessed
 	$question = getRandomSong($bdd);
 	if($question == -1)
-		exit('{"error":"could not generate a song"}');
+		exit('{"status":"error","error":"could not generate a song"}');
 
 	$output = array($question);
 
@@ -69,7 +67,7 @@
 	$processedOutput = extractDataForSongs($output, $bdd);
 
 	if(empty($processedOutput))
-		exit('{"error":"could not generate output"}');
+		exit('{"status":"error","error":"could not generate output"}');
 
 	$finalOutput = array(
 		'songID' => $question,

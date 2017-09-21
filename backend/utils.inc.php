@@ -33,7 +33,7 @@ function organizeMessage($bdd, $result)
 	    //Ideally, we would also cache the result as the chatbox probably only has a handful of active users.
 
         $lastMessageID = $result[0]['messageID'];
-        $req = $bdd->prepare('SELECT name FROM user WHERE `ID` = ?1');
+        $req = $bdd->prepare('SELECT `name` FROM `user` WHERE `ID` = ?1');
 
         foreach ($result as $row) 
         {
@@ -57,4 +57,9 @@ function organizeMessage($bdd, $result)
         );
 
     return json_encode($chatBox);
+}
+
+function hashPasswordForUser($password)
+{
+	return password_hash($password, PASSWORD_BCRYPT);
 }

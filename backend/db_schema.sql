@@ -80,7 +80,7 @@ CREATE TABLE `music` (
 CREATE TABLE `user` (
   `ID` bigint(20) UNSIGNED NOT NULL,
   `name` text NOT NULL,
-  `password` varchar(23) NOT NULL,
+  `password` char(60) NOT NULL,
   `email` text NOT NULL,
   `currentStrike` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

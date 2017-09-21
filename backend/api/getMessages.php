@@ -10,13 +10,7 @@ else
 	$nbMessages = $defaultNumberMessages;
 
 $bdd = connectDB();
-if($bdd == null)
-{
-	logError("Bdd fail connect");
-	exit('{"error":"Bdd fail connect"}');
-}
-
-$req =$bdd->prepare("SELECT * FROM chatBox ORDER BY `messageID` DESC LIMIT $nbMessages");
+$req = $bdd->prepare("SELECT * FROM chatBox ORDER BY `messageID` DESC LIMIT $nbMessages");
 $req->execute();
 
 echo organizeMessage($bdd, $req->fetch());

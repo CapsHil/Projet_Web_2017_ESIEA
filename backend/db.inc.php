@@ -18,8 +18,12 @@ function connectDB()
     catch (Exception $bdd)
     {
         logError('Error : ' . $bdd->getMessage());
-        die('internal_error');
+        die('{"status":"error","error":"Could not connect to database"}');
     }
+
+    if($bdd == null)
+	    die('{"status":"error","error":"Could not connect to database"}');
+
     return $bdd;
 }
 
@@ -27,15 +31,14 @@ function connectDB()
  *  Insertion in the database
  */
 
+//Genre management
+
 function registerGenre($genreName = "")
 {
     if(empty($genreName))
         return 0;
 
     $bdd = connectDB();
-    if($bdd == null)
-        return 0;
-
     $req = $bdd->prepare('INSERT INTO `genre`(`name`) VALUES(?1)');
     $out = $req->execute(array('?1' => strtolower($genreName)));
     $req->closeCursor();
@@ -57,9 +60,6 @@ function hasGenre($genreID = 0)
         return false;
 
     $bdd = connectDB();
-    if($bdd == null)
-        return false;
-
     $req = $bdd->prepare('SELECT COUNT() FROM `genre` WHERE `genreID` = ?1');
     $req->execute(array('?1' => $genreID));
     $data = $req->fetch();
@@ -71,11 +71,7 @@ function hasGenre($genreID = 0)
 function getGenreForID($songID, $bdd = null)
 {
 	if($bdd == null)
-	{
 		$bdd = connectDB();
-		if($bdd == null)
-			return false;
-	}
 
 	$req = $bdd->prepare('SELECT `genreID` FROM `music` WHERE `ID` = ?1');
 	$req->execute(array('?1' => $songID));
@@ -85,16 +81,14 @@ function getGenreForID($songID, $bdd = null)
 	return $data['genreID'];
 }
 
+//Song management
+
 function registerSong($filename = "", $artistName = "", $trackName = "", $genreID = 0)
 {
     if(empty($filename) || empty($artistName) || empty($trackName) || empty($genreID))
         return false;
 
-	$bdd = connectDB();
-	if($bdd == null)
-		return false;
-
-	$req = $bdd->prepare('INSERT INTO `music` (`genreID`, `filename`, `trackName`, `artistName`) 
+	$req = connectDB()->prepare('INSERT INTO `music` (`genreID`, `filename`, `trackName`, `artistName`) 
 														VALUES(?genre, ?filename, ?trackName, ?artistName)');
 	$out = $req->execute(array('?genre' => $genreID, '?filename' => $filename, '?trackName' => $trackName, '?artistName' => $artistName));
 	$req->closeCursor();
@@ -108,11 +102,7 @@ function getRandomSongs($bdd = null, $nbSongs = 1)
 		return false;
 
 	if($bdd == null)
-	{
 		$bdd = connectDB();
-		if($bdd == null)
-			return false;
-	}
 
 	//We're trying to get a random ID from the database
 	//SORT RAND() LIMIT 1 would work but may become a bottleneck later on
@@ -145,11 +135,7 @@ function getRandomSongs($bdd = null, $nbSongs = 1)
 function getNbSongs($bdd = null)
 {
 	if($bdd == null)
-	{
 		$bdd = connectDB();
-		if($bdd == null)
-			return false;
-	}
 
 	$req = $bdd->prepare('SELECT COUNT() FROM `music`');
 	$req->execute();
@@ -162,11 +148,7 @@ function getNbSongs($bdd = null)
 function getCloseRelativeSong($songID, $bdd = null, $maxReturn = 0)
 {
 	if($bdd == null)
-	{
 		$bdd = connectDB();
-		if($bdd == null)
-			return false;
-	}
 
 	$genre = getGenreForID($songID);
 
@@ -192,11 +174,7 @@ function extractDataForSongs($songIDs, $bdd = null)
 		return array();
 
 	if($bdd == null)
-	{
 		$bdd = connectDB();
-		if($bdd == null)
-			return array();
-	}
 
 	$req = $bdd->prepare('SELECT `ID`, `trackName`, `artistName` FROM `music` WHERE `ID` = ?ID');
 
@@ -219,11 +197,7 @@ function extractDataForSongs($songIDs, $bdd = null)
 function getFileName($songID, $bdd = null)
 {
 	if($bdd == null)
-	{
 		$bdd = connectDB();
-		if($bdd == null)
-			return array();
-	}
 
 	$req = $bdd->prepare('SELECT `filename` FROM `music` WHERE `ID` = ?ID');
 	$req->execute(array('?ID' => $songID));
