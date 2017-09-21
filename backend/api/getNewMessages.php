@@ -9,6 +9,11 @@ if(!is_int($_REQUEST['lastMaxId']))
 	exit('{"error":"invalid Value"}');
 }
 
+if(is_int($_REQUEST['nbSuggestions']))
+	$nbMessages = $_REQUEST['nbSuggestions'];
+else
+	$nbMessages = $defaultNumberMessages;
+
 $bdd = connectDB();
 if($bdd == null)
 {
@@ -16,8 +21,8 @@ if($bdd == null)
 	exit('{"error":"Bdd fail connect"}');
 }
 
-$req =$bdd->prepare("SELECT * FROM chatBox WHERE `messageID` > ?lastMaxID ORDER BY `messageID` DESC LIMIT $defaultNumberMessages");
-$req->execute('?lastMaxId' => $_REQUEST['lastMaxId']);
+$req =$bdd->prepare("SELECT * FROM chatBox WHERE `messageID` > ?lastMaxID ORDER BY `messageID` DESC LIMIT $nbMessages");
+$req->execute(array('?lastMaxId' => $_REQUEST['lastMaxId']));
 $result = $req->fetch();
 
 echo organizeMessage($bdd, $result);

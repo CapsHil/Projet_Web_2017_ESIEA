@@ -29,24 +29,31 @@ function organizeMessage($bdd, $result)
     
     if (length($result) > 0)
     {
-        $lastMessageID = $result[0]['messageID']
+    	//The DB access isn't hidden in a dedicated function so we can reuse more efficiently the request.
+	    //Ideally, we would also cache the result as the chatbox probably only has a handful of active users.
+
+        $lastMessageID = $result[0]['messageID'];
         $req = $bdd->prepare('SELECT name FROM user WHERE `ID` = ?1');
 
         foreach ($result as $row) 
         {
-            $req->execute(array('?1' => $row['userID']));
-            $messages[] = array(
-                'messageText' => $row["messageText"],
-                'user' => ($req2->fetch())['name'],
-                'time' => $row['time']
-                )
+            if($req->execute(array('?1' => $row['userID'])))
+            {
+            	$metadata = $req->fetch();
+
+	            $messages[] = array(
+		            'messageText' => $row['messageText'],
+		            'user' => $metadata['name'],
+		            'time' => $row['time']
+	            );
+            }
         }
         $req->closeCursor();
     }
 
     $chatBox = array(
-        "lastMessage" => $lastMessageID,
-        "messages" => array_reverse($messages)
+        'lastMessage' => $lastMessageID,
+        'messages' => array_reverse($messages)
         );
 
     return json_encode($chatBox);

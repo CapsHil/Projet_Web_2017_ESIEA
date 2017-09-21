@@ -4,6 +4,11 @@ include_once('db.inc.php');
 include_once('config.inc.php');
 include_once('utils.inc.php');
 
+if(is_int($_REQUEST['nbSuggestions']))
+	$nbMessages = $_REQUEST['nbSuggestions'];
+else
+	$nbMessages = $defaultNumberMessages;
+
 $bdd = connectDB();
 if($bdd == null)
 {
@@ -11,8 +16,9 @@ if($bdd == null)
 	exit('{"error":"Bdd fail connect"}');
 }
 
-$req =$bdd->prepare("SELECT * FROM chatBox ORDER BY `messageID` DESC LIMIT $defaultNumberMessages");
+$req =$bdd->prepare("SELECT * FROM chatBox ORDER BY `messageID` DESC LIMIT $nbMessages");
 $req->execute();
-$result = $req->fetch();
 
-echo organizeMessage($bdd, $result);
+echo organizeMessage($bdd, $req->fetch());
+
+$req->closeCursor();
