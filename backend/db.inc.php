@@ -349,3 +349,33 @@ LIMIT ?1');
 
 	return $output;
 }
+
+function increaseCurrentStrike($userID, $bdd)
+{
+	if($bdd == null)
+		$bdd = connectDB();
+
+	$req = $bdd->prepare('UPDATE `user` SET `currentStrike` = `currentStrike` + 1 WHERE `ID` = ?1');
+	$req->execute(['?1' => $userID]);
+	$req->closeCursor();
+}
+
+function commitStrike($userID, $bdd)
+{
+	if($bdd == null)
+		$bdd = connectDB();
+
+	$req = $bdd->prepare('SELECT `currentStrike` FROM `user` WHERE `ID` = ?1');
+	$req->execute(['?1' => $userID]);
+	$data = $req->fetch();
+	$currentStrike = $data['currentStrike'];
+	$req->closeCursor();
+
+	$req = $bdd->prepare('UPDATE `user` SET `currentStrike` = 0 WHERE `ID` = ?1');
+	$req->execute(['?1' => $userID]);
+	$req->closeCursor();
+
+	$req = $bdd->prepare('UPDATE `highScore` SET `score` = ?1 WHERE `userID` = ?2');
+	$req->execute(['?1' => $currentStrike, '?2' => $userID]);
+	$req->closeCursor();
+}

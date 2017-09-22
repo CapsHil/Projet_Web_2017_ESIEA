@@ -23,7 +23,7 @@ If `error` was returned, a short message describing the issue is appended in an 
 | Component | API | Arguments | Output on success |
 | ---- | ---- | ------------ | --------- |
 | **Blindtest** | getTest.php | `nbSuggestions` containing the number of plausible answers to return. This parameter is optionnal, the API will default to 4 suggestions. | `songID` (the ID the real song), `filename` (the name of the file to play), `suggestions` (an array of items containing the `songID` of the suggestion, `trackName` and `artistName` to craft the suggestion). In order to let the frontend format it properly, the trackname and the artist name aren't merged beforehand |
-| **Blindtest** | validateTest.php | `userID` of the current user, `songID` of the song playing, `answer` (the ID of the selection) | WIP |
+| **Blindtest** | validateTest.php | `userID` of the current user, `songID` of the song playing, `answer` (the ID of the selection) | `correct` containing a boolean |
 | **Chatbox** | getMessages.php | `nbMessages` the maximum number of messages to return. This parameter is optional, the API will default to 200 messages. | `lastMessageID` containing the ID of the lastest message returned by the API and `messages`, an array of messages sorted from earliest to lastest composed items containing `messageText`, `user` and `time` |
 | **Chatbox** | getNewMessages.php | `lastMessageID` (the last message of the previous request, will only returns messages after this one) and optionnally `nbMessages` (same default as `getMessages.php`). | Same output as `getMessages.php`
 | **Chatbox** | sendMessage.php | `userID` of the user posting, `message` to post | None |
