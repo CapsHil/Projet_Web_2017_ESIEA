@@ -1,6 +1,7 @@
 <template>
   <div class="play-button">
     <div class="timer">{{ timer }}</div>
+    <div>{{ correctAnswer }}</div>
     <button v-on:click="startNewExtract()">{{ msg }}</button>
   </div>
 </template>
@@ -18,14 +19,17 @@
     data () {
       return {
         msg: 'Play',
-        timer: timerValue
+        timer: timerValue,
+        correctAnswer: null,
+        axios: axios
       }
     },
     methods: {
       startNewExtract () {
-        axios.get('http://localhost:8081/extract')
-          .then(function (response) {
-            console.log(response)
+        this.axios.get('http://localhost:8081/extract')
+          .then((response) => {
+            console.log(response.data)
+            this.correctAnswer = response.data.correctAnswer
           })
           .catch(function (error) {
             console.log(error)
