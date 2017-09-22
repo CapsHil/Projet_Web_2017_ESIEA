@@ -28,9 +28,11 @@
 		if($exclusion != null && is_array($exclusion))
 			$hasExclusion = true;
 	}
+	else
+		$exclusion = [];
 
 	//Get the ID of the song that will have to be guessed
-	$question = getRandomSong($bdd);
+	$question = getRandomSongs($bdd);
 	if($question == -1)
 		exit('{"status":"error","error":"could not generate a song"}');
 
@@ -38,7 +40,7 @@
 
 	//Get related songs to populate the suggestions
 	$outputLength = 1;
-	$suggestions = getCloseRelativeSong($question, $bdd, $nbSuggestions - 1 + ($hasExclusion ? length($rawExclusion) : 0));
+	$suggestions = getCloseRelativeSong($question, $bdd, $nbSuggestions - 1 + ($hasExclusion ? count($exclusion) : 0));
 
 	while($outputLength < $nbSuggestions)
 	{

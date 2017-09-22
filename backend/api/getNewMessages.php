@@ -1,7 +1,7 @@
 <?php
-include_once('db.inc.php');
-include_once('config.inc.php');
-include_once('utils.inc.php');
+include_once('../db.inc.php');
+include_once('../config.inc.php');
+include_once('../utils.inc.php');
 
 if(!is_int($_REQUEST['lastMaxId']))
 {

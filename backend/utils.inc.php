@@ -26,8 +26,11 @@ function organizeMessage($bdd, $result)
 {
     $messages = array();
     $lastMessageID = 0;
+
+    if($bdd == null)
+    	$bdd = connectDB();
     
-    if (length($result) > 0)
+    if (count($result) > 0)
     {
     	//The DB access isn't hidden in a dedicated function so we can reuse more efficiently the request.
 	    //Ideally, we would also cache the result as the chatbox probably only has a handful of active users.

@@ -13,7 +13,7 @@ function connectDB()
 {
     try
     {
-        $bdd = new PDO($dbName, $dbUserName, $dbPassword);
+        $bdd = new PDO(dbName, dbUserName, dbPassword);
     }
     catch (Exception $bdd)
     {
@@ -89,8 +89,8 @@ function registerSong($filename = "", $artistName = "", $trackName = "", $genreI
         return false;
 
 	$req = connectDB()->prepare('INSERT INTO `music` (`genreID`, `filename`, `trackName`, `artistName`) 
-														VALUES(?genre, ?filename, ?trackName, ?artistName)');
-	$out = $req->execute(array('?genre' => $genreID, '?filename' => $filename, '?trackName' => $trackName, '?artistName' => $artistName));
+														VALUES(?1, ?2, ?3, ?4)');
+	$out = $req->execute(array('?1' => $genreID, '?2' => $filename, '?3' => $trackName, '?4' => $artistName));
 	$req->closeCursor();
 
     return $out == true;
@@ -152,9 +152,16 @@ function getCloseRelativeSong($songID, $bdd = null, $maxReturn = 0)
 
 	$genre = getGenreForID($songID);
 
-	$req = $bdd->prepare('SELECT `ID` FROM `music` WHERE `genreID` = ?genre AND `ID` != ?songID SORT RAND() '
-																		. empty($maxReturn) ? "" : "LIMIT ?max");
-	$req->execute(array('?genreID' => $genre, '?songID' => $songID, '?max' => $maxReturn));
+	if(empty($maxReturn))
+	{
+		$req = $bdd->prepare('SELECT `ID` FROM `music` WHERE `genreID` = ?1 AND `ID` != ?2 ORDER BY RAND()');
+		$req->execute(array('?1' => $genre, '?2' => $songID));
+	}
+	else
+	{
+		$req = $bdd->prepare('SELECT `ID` FROM `music` WHERE `genreID` = ?1 AND `ID` != ?2 ORDER BY RAND() LIMIT ?3');
+		$req->execute(array('?1' => $genre, '?2' => $songID, '?3' => $maxReturn));
+	}
 	$data = $req->fetch();
 	$req->closeCursor();
 
@@ -170,19 +177,19 @@ function getCloseRelativeSong($songID, $bdd = null, $maxReturn = 0)
 
 function extractDataForSongs($songIDs, $bdd = null)
 {
-	if(!is_array($songIDs) || length($songIDs) == 0)
+	if(!is_array($songIDs) || count($songIDs) == 0)
 		return array();
 
 	if($bdd == null)
 		$bdd = connectDB();
 
-	$req = $bdd->prepare('SELECT `ID`, `trackName`, `artistName` FROM `music` WHERE `ID` = ?ID');
+	$req = $bdd->prepare('SELECT `ID`, `trackName`, `artistName` FROM `music` WHERE `ID` = ?1');
 
 	$output = array();
 
 	foreach ($songIDs as $song)
 	{
-		$req->execute(array('?ID' => $song));
+		$req->execute(array('?1' => $song));
 		$data = $req->fetch();
 
 		array_push($output, array(  "songID" => $data['ID'],
@@ -192,6 +199,7 @@ function extractDataForSongs($songIDs, $bdd = null)
 	}
 
 	$req->closeCursor();
+	return $output;
 }
 
 function getFileName($songID, $bdd = null)
@@ -199,25 +207,39 @@ function getFileName($songID, $bdd = null)
 	if($bdd == null)
 		$bdd = connectDB();
 
-	$req = $bdd->prepare('SELECT `filename` FROM `music` WHERE `ID` = ?ID');
-	$req->execute(array('?ID' => $songID));
+	$req = $bdd->prepare('SELECT `filename` FROM `music` WHERE `ID` = ?1');
+	$req->execute(array('?1' => $songID));
 	$data = $req->fetch();
 	$req->closeCursor();
 
 	return $data['filename'];
 }
 
+function hasSong($songID, $bdd = null)
+{
+	if($bdd == null)
+		$bdd = connectDB();
+
+	$req = $bdd->prepare('SELECT COUNT(*) FROM `music` WHERE `ID` = ?1');
+	$req->execute(['?1' => $songID]);
+	$output = $req->fetchColumn() == 1;
+	$req->closeCursor();
+
+	return $output;
+}
+
 //Chat management
 
 function insertMessageIntoDB($userID, $message)
 {
-	$req = connectDB()->prepare("INSERT INTO `chatbox`(`message`, `userID`) VALUES (?message, ?userID)");
+	$req = connectDB()->prepare("INSERT INTO `chatbox`(`message`, `userID`) VALUES (?1, ?2)");
 	$output = $req->execute([
-		'?message' => $message,
-		'?userID' => $userID
+		'?1' => $message,
+		'?2' => $userID
 	]);
 
 	$req->closeCursor();
+	return $output;
 }
 
 //User management
@@ -229,11 +251,11 @@ function createUser($name, $email, $password)
 	if($hashedPassword === false)
 		return false;
 
-	$req = connectDB()->prepare("INSERT INTO `user`(`name`, `password`, `email`) VALUES (?name, ?password, ?email)");
+	$req = connectDB()->prepare("INSERT INTO `user`(`name`, `password`, `email`) VALUES (?1, ?2, ?3)");
 	$output = $req->execute([
-		'?name' => $name,
-		'?password' => $hashedPassword,
-		'?email' => $email
+		'?1' => $name,
+		'?2' => $hashedPassword,
+		'?3' => $email
 		]);
 
 	$req->closeCursor();
@@ -243,9 +265,9 @@ function createUser($name, $email, $password)
 
 function validateUserPassword($name, $password)
 {
-	$req = connectDB()->prepare("SELECT `password`, `ID` FROM `user` WHERE `name` = ?name");
+	$req = connectDB()->prepare("SELECT `password`, `ID` FROM `user` WHERE `name` = ?1");
 
-	if($req->execute(['?name' => $name]))
+	if($req->execute(['?1' => $name]))
 	{
 		$data = $req->fetch();
 
@@ -278,9 +300,12 @@ function getUserIDFromName($name)
 	return $output;
 }
 
-function hasUserID($userID)
+function hasUserID($userID, $bdd = null)
 {
-	$req = connectDB()->prepare('SELECT COUNT() FROM `user` WHERE `ID` = ?1');
+	if($bdd == null)
+		$bdd = connectDB();
+
+	$req = $bdd->prepare('SELECT COUNT() FROM `user` WHERE `ID` = ?1');
 	$req->execute(['?1' => $userID]);
 	$output = $req->fetchColumn() == 1;
 	$req->closeCursor();
@@ -312,9 +337,9 @@ function getTopScores($nbTopScores)
 FROM `highScore` 
 INNER JOIN `user` ON `highScore`.`userID` = `user`.`ID`
 ORDER BY `highScore`.`score`
-LIMIT ?limit');
+LIMIT ?1');
 
-	$req->execute(['?limit' => $nbTopScores]);
+	$req->execute(['?1' => $nbTopScores]);
 
 	$counter = 1;
 	$output = [];
@@ -322,5 +347,5 @@ LIMIT ?limit');
 	while ($score = $req->fetch())
 		array_push($output, ['rank' => $counter++, 'user' => $score['name'], 'score' => $score['score']]);
 
-	return output;
+	return $output;
 }
