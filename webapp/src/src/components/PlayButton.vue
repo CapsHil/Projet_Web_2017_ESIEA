@@ -10,18 +10,16 @@
   import buzz from 'buzz'
   import axios from 'axios'
 
-// eslint-disable-next-line new-cap
-  let sound = new buzz.sound(require('../assets/sound.mp3'))
-  let timerValue = '00:00'
-
   export default {
     name: 'play-button',
     data () {
       return {
         msg: 'Play',
-        timer: timerValue,
+        timer: null,
         correctAnswer: null,
-        axios: axios
+        axios: axios,
+        // eslint-disable-next-line new-cap
+        sound: new buzz.sound(require('../assets/sound.mp3'))
       }
     },
     methods: {
@@ -34,13 +32,14 @@
           .catch(function (error) {
             console.log(error)
           })
-        sound.play()
+        this.sound.play()
         this.msg = 'Playing'
-        sound.bind('timeupdate', function () {
-          timerValue = buzz.toTimer(this.getTime())
-          if (timerValue === '00:10') {
+        this.sound.bind('timeupdate', () => {
+          this.timer = buzz.toTimer(this.sound.getTime())
+          console.log(this.timer)
+          if (this.timer === '00:10') {
             this.msg = 'Play'
-            sound.stop()
+            this.sound.stop()
           }
         })
       }
