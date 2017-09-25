@@ -1,12 +1,12 @@
 <template>
   <div class="index">
     <h1>{{ welcome }}</h1>
-    <play-button></play-button>
+    <quizz-game></quizz-game>
   </div>
 </template>
 
 <script>
-  import PlayButton from './PlayButton.vue'
+  import QuizzGame from './QuizzGame.vue'
 
   export default {
     name: 'index',
@@ -16,7 +16,7 @@
       }
     },
     components: {
-      PlayButton
+      QuizzGame
     }
   }
 </script>

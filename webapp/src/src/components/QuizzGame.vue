@@ -1,5 +1,5 @@
 <template>
-  <div class="play-button">
+  <div class="quizz-game">
     <div class="timer">{{ timer }}</div>
     <div>{{ correctAnswer }}</div>
     <button v-on:click="startNewExtract()">{{ msg }}</button>
@@ -20,7 +20,7 @@
   import axios from 'axios'
 
   export default {
-    name: 'play-button',
+    name: 'quizz-game',
     data () {
       return {
         msg: 'Play',
