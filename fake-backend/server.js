@@ -10,7 +10,13 @@ app.get('/extract', function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
 	res.send(JSON.stringify({
 	"extractFilename": "sound.mp3",
-	"correctAnswer": answer
+	"correctAnswer": answer,
+	"answerLabels": {
+		"one": "Wethan",
+		"two": "Don Diablo",
+		"three": "Coldplay",
+		"four": "La réponse D"
+	}
 }));
 });
 
