@@ -78,6 +78,10 @@
       displayToggle (buttonId) {
         this.sound.stop()
         this.msg = 'Play'
+        this.answer1 = null
+        this.answer2 = null
+        this.answer3 = null
+        this.answer4 = null
         if (this.correctAnswer === buttonId) {
           alert('Yay! You got it! ')
         } else {
