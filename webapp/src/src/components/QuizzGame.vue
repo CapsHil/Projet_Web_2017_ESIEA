@@ -4,12 +4,12 @@
     <div>{{ correctAnswer }}</div>
     <button v-on:click="startNewExtract()">{{ msg }}</button>
     <div class="row">
-      <button class="answer-button" v-on:click="displayToggle(1)">{{ answer1 }}</button>
-      <button class="answer-button" v-on:click="displayToggle(2)">{{ answer2 }}</button>
+      <button class="answer-button" v-on:click="displayToggle(0)">{{ answers[0] }}</button>
+      <button class="answer-button" v-on:click="displayToggle(1)">{{ answers[1] }}</button>
     </div>
     <div class="row">
-      <button class="answer-button" v-on:click="displayToggle(3)">{{ answer3 }}</button>
-      <button class="answer-button" v-on:click="displayToggle(4)">{{ answer4 }}</button>
+      <button class="answer-button" v-on:click="displayToggle(2)">{{ answers[2] }}</button>
+      <button class="answer-button" v-on:click="displayToggle(3)">{{ answers[3] }}</button>
     </div>
   </div>
 
@@ -26,13 +26,10 @@
         msg: 'Play',
         timer: '00:10',
         timerBuffer: null,
-        correctAnswer: 'NàN',
+        correctAnswer: 'NaN',
         axios: axios,
         sound: null,
-        answer1: null,
-        answer2: null,
-        answer3: null,
-        answer4: null,
+        answers: [],
         isCorrectAnswer: 3
       }
     },
@@ -44,10 +41,11 @@
             // eslint-disable-next-line new-cap
             this.sound = new buzz.sound(require('../assets/' + response.data.extractFilename))
             this.correctAnswer = response.data.correctAnswer
-            this.answer1 = response.data.answerLabels.one
-            this.answer2 = response.data.answerLabels.two
-            this.answer3 = response.data.answerLabels.three
-            this.answer4 = response.data.answerLabels.four
+            this.answers = []
+            this.answers.push(response.data.answerLabels[0])
+            this.answers.push(response.data.answerLabels[1])
+            this.answers.push(response.data.answerLabels[2])
+            this.answers.push(response.data.answerLabels[3])
             this.sound.play()
             this.msg = 'Playing'
             this.sound.bind('timeupdate', () => {
@@ -62,12 +60,11 @@
               console.log(this.timer)
 
               if (this.timer === '00:00') {
-                this.msg = 'Play'
-                this.answer1 = null
-                this.answer2 = null
-                this.answer3 = null
-                this.answer4 = null
                 this.sound.stop()
+                alert('NOOB! The correct answer was: ' + this.answers[this.correctAnswer])
+                this.msg = 'Play'
+                this.correctAnswer = 'NaN'
+                this.answers = []
               }
             })
           })
@@ -78,10 +75,7 @@
       displayToggle (buttonId) {
         this.sound.stop()
         this.msg = 'Play'
-        this.answer1 = null
-        this.answer2 = null
-        this.answer3 = null
-        this.answer4 = null
+        this.answers = []
         if (this.correctAnswer === buttonId) {
           alert('Yay! You got it! ')
         } else {
