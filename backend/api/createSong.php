@@ -1,4 +1,5 @@
 <?php
+include_once("../config.inc.php");
 include_once("../db.inc.php");
 include_once("../utils.inc.php");
 
@@ -14,7 +15,7 @@ if(empty($_REQUEST['trackName']) || empty($_REQUEST['artist']) || !is_int($_REQU
 do //Generate name file
 {
     $outputFileName = bin2hex(random_bytes(8));
-    $target_file = 'music/' . $outputFileName;
+    $target_file = $relativeMusicDirectory . $outputFileName;
 
 } while(file_exists($target_file));
 

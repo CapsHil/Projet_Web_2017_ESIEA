@@ -74,7 +74,7 @@
 	$finalOutput = array(
 		'status' => 'success',
 		'songID' => $question,
-		'filename' => "music/" . getFileName($question, $bdd),
+		'filename' => $publicMusicDirectory . getFileName($question, $bdd),
 		'suggestions' => $processedOutput);
 
 	echo json_encode($finalOutput);
