@@ -21,3 +21,8 @@
   }
 </script>
 
+<style>
+  h1{
+    color: #efefef
+  }
+</style>

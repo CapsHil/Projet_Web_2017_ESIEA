@@ -1,15 +1,18 @@
 <template>
   <div class="quizz-game">
-    <div class="timer">{{ timer }}</div>
-    <div>{{ correctAnswer }}</div>
-    <button v-on:click="startNewExtract()" :disabled="playing == 1">{{ msg }}</button>
-    <div class="row">
-      <button class="answer-button" v-on:click="displayToggle(0)">{{ answers[0] }}</button>
-      <button class="answer-button" v-on:click="displayToggle(1)">{{ answers[1] }}</button>
+    <div>for dev purpose: {{ correctAnswer }}</div>
+
+    <div class="row game-header">
+      <button class="play-button" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1">{{ msg }}</button>
+      <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
     </div>
     <div class="row">
-      <button class="answer-button" v-on:click="displayToggle(2)">{{ answers[2] }}</button>
-      <button class="answer-button" v-on:click="displayToggle(3)">{{ answers[3] }}</button>
+      <button class="answer-button" v-bind:class="{ 'active-button': playing }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
+      <button class="answer-button" v-bind:class="{ 'active-button': playing }" v-on:click="displayToggle(1)" :disabled="playing == 0">{{ answers[1] }}</button>
+    </div>
+    <div class="row">
+      <button class="answer-button" v-bind:class="{ 'active-button': playing }" v-on:click="displayToggle(2)" :disabled="playing == 0">{{ answers[2] }}</button>
+      <button class="answer-button" v-bind:class="{ 'active-button': playing }" v-on:click="displayToggle(3)" :disabled="playing == 0">{{ answers[3] }}</button>
     </div>
   </div>
 
@@ -31,7 +34,7 @@
         sound: null,
         answers: [],
         isCorrectAnswer: 3,
-        playing: 0
+        playing: false
       }
     },
     methods: {
@@ -91,12 +94,80 @@
 </script>
 
 <style>
+  body{
+    background-color: #1b7397;
+  }
+
+  .game-header{
+    /*padding: 0 40% 0 40%;*/
+    /*display: flex;*/
+    /*flex-direction: row;*/
+  }
+
+  .play-button{
+
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background-color: #329f5b;
+    border-style: double;
+    border-color: #0c8346;
+    color: #efefef;
+    transition: transform 0.2s;
+    transition: box-shadow 0.2s;
+  }
+
+  .timer{
+    color: #efefef;
+    padding:40px;
+    line-height: 20px;
+    font-size: 50px;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    visibility: hidden;
+  }
+
+  .show-timer{
+    visibility: visible;
+  }
+
+  .not-playing:hover{
+    transform: translateY(-4px);
+    box-shadow: 2px 8px 5px #232323;
+  }
+
+  .not-playing:active{
+    transform: translateY(0px);
+    box-shadow: 0 0 0 #000000;
+  }
+
+  .playing{
+    transform: translateY(-4px);
+    box-shadow: 2px 8px 5px #232323;
+    background-color: #232323;
+    transition: color 0.2s;
+  }
+
   .answer-button {
     display: inline;
-    padding: 10px;
+    padding: 0px;
     width: 300px;
+    background-color: #5eaeb8;
     height: 200px;
     margin: 20px;
+    border: hidden;
+    border-radius: 5px;
+    transition: transform 0.2s;
+    transition: box-shadow 0.2s;
+    overflow: hidden;
+    font-size: 25px;
+  }
+
+  .active-button:hover{
+    transform: translateY(-2px);
+    box-shadow: 2px 8px 5px #232323;
   }
 </style>
 
