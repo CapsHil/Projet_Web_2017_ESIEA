@@ -2,7 +2,7 @@
   <div class="quizz-game">
     <div class="timer">{{ timer }}</div>
     <div>{{ correctAnswer }}</div>
-    <button v-on:click="startNewExtract()">{{ msg }}</button>
+    <button v-on:click="startNewExtract()" :disabled="playing == 1">{{ msg }}</button>
     <div class="row">
       <button class="answer-button" v-on:click="displayToggle(0)">{{ answers[0] }}</button>
       <button class="answer-button" v-on:click="displayToggle(1)">{{ answers[1] }}</button>
@@ -30,11 +30,13 @@
         axios: axios,
         sound: null,
         answers: [],
-        isCorrectAnswer: 3
+        isCorrectAnswer: 3,
+        playing: 0
       }
     },
     methods: {
       startNewExtract () {
+        this.playing = 1
         this.axios.get('http://localhost:8081/extract')
           .then((response) => {
             console.log(response.data)
@@ -62,6 +64,7 @@
               if (this.timer === '00:00') {
                 this.sound.stop()
                 alert('NOOB! The correct answer was: ' + this.answers[this.correctAnswer])
+                this.playing = 0
                 this.msg = 'Play'
                 this.correctAnswer = 'NaN'
                 this.answers = []
@@ -75,6 +78,7 @@
       displayToggle (buttonId) {
         this.sound.stop()
         this.msg = 'Play'
+        this.playing = 0
         this.answers = []
         if (this.correctAnswer === buttonId) {
           alert('Yay! You got it! ')
