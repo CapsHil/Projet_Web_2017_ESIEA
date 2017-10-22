@@ -10,3 +10,8 @@ or
 - `./run-prod.sh`
 or
 - `docker run --rm -v $(pwd):/src -w /src node:6 bash -c "npm install && npm run build"` in `webapp/src/` folder
+
+### Run fake backend
+- In `fake-backend`
+- `npm install`
+- `npm start`
