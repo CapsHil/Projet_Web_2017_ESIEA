@@ -11,7 +11,6 @@ or
 or
 - `docker run --rm -v $(pwd):/src -w /src node:6 bash -c "npm install && npm run build"` in `webapp/src/` folder
 
-<<<<<<< HEAD
 ### Run fake backend
 - In `fake-backend`
 - `npm install`
