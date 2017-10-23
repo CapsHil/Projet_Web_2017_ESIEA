@@ -84,7 +84,7 @@
 
 	function validateTest($input)
 	{
-		if(!is_int($input['userID']) || !is_int($input['songID']) || !is_int($input['answer']))
+		if(!is_numeric($input['userID']) || !is_numeric($input['songID']) || !is_numeric($input['answer']))
 			exit('{"status":"error", "error": "invalid arguments"}');
 
 		include_once ('../db.inc.php');

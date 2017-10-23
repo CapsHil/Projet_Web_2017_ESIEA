@@ -61,12 +61,12 @@ function hasGenre($genreID = 0)
         return false;
 
     $bdd = connectDB();
-    $req = $bdd->prepare('SELECT COUNT() FROM `genre` WHERE `genreID` = :1');
+    $req = $bdd->prepare('SELECT COUNT(*) FROM `genre` WHERE `genreID` = :1');
     $req->execute(array(':1' => $genreID));
-    $data = $req->fetch();
+	$data = $req->fetch();
     $req->closeCursor();
 
-    return $data != 0;
+    return $data[0] != 0;
 }
 
 function getGenreForID($songID, $bdd = null)
@@ -233,13 +233,12 @@ function hasSong($songID, $bdd = null)
 
 function insertMessageIntoDB($userID, $message)
 {
-	$req = connectDB()->prepare("INSERT INTO `chatbox`(`message`, `userID`) VALUES (:1, :2)");
+	$req = connectDB()->prepare("INSERT INTO `chatbox`(`messageText`, `userID`) VALUES (:1, :2)");
 	$output = $req->execute([
 		':1' => $message,
 		':2' => $userID
 	]);
 
-	$req->closeCursor();
 	return $output;
 }
 
@@ -306,9 +305,10 @@ function hasUserID($userID, $bdd = null)
 	if($bdd == null)
 		$bdd = connectDB();
 
-	$req = $bdd->prepare('SELECT COUNT() FROM `user` WHERE `ID` = :1');
+	$req = $bdd->prepare('SELECT COUNT(`ID`) FROM `user` WHERE `ID` = :1');
 	$req->execute([':1' => $userID]);
-	$output = $req->fetchColumn() == 1;
+	$count = $req->fetch();
+	$output = $count[0] == 1;
 	$req->closeCursor();
 
 	return $output;
@@ -316,9 +316,6 @@ function hasUserID($userID, $bdd = null)
 
 function deleteUser($userID)
 {
-	if(!is_int($userID))
-		return;
-
 	$bdd = connectDB();
 
 	$req = $bdd->prepare('DELETE FROM `chatbox` WHERE `userID` = :1;

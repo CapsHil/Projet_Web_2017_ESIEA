@@ -12,29 +12,26 @@ include_once('../utils.inc.php');
 
 function getMessages($input)
 {
-	if(is_int($input['nbSuggestions']))
-		$nbMessages = $input['nbSuggestions'];
-	else
+	$nbMessages = $input['nbSuggestions'];
+	if(!is_int($nbMessages))
 		$nbMessages = $GLOBALS['defaultNbMessages'];
 
-	$wantOnlyNewMessages = is_int($input['lastMaxId']);
+	$wantOnlyNewMessages = !emtpy($input['lastMaxId']);
 
 	$bdd = connectDB();
 
 	if($wantOnlyNewMessages)
 	{
-		$req =$bdd->prepare("SELECT * FROM chatBox WHERE `messageID` > ?lastMaxID ORDER BY `messageID` DESC LIMIT $nbMessages");
-		$req->execute(array('?lastMaxId' => $input['lastMaxId']));
+		$req =$bdd->prepare("SELECT * FROM `chatbox` WHERE `messageID` > :1 ORDER BY `messageID` DESC LIMIT $nbMessages");
+		$req->execute(array(':1' => $input['lastMaxId']));
 	}
 	else
 	{
-		$req = $bdd->prepare("SELECT * FROM chatBox ORDER BY `messageID` DESC LIMIT $nbMessages");
+		$req = $bdd->prepare("SELECT * FROM `chatbox` ORDER BY `messageID` DESC LIMIT $nbMessages");
 		$req->execute();
 	}
 
-	$result = $req->fetch();
-
-	echo organizeMessage($bdd, $result);
+	echo organizeMessage($bdd, $req);
 
 	$req->closeCursor();
 }
@@ -44,7 +41,9 @@ function sendMessage($input)
 	if(empty($input['message']))
 		return;
 
-	if(!is_int($input['userID']))
+	$userID = (int) $_REQUEST['userID'];
+
+	if(!is_int($userID))
 	{
 		logError('Invalid user ID (' . $input['userID'] . ') provided while trying to send a message: ' . $input['message']);
 		exit('{"status":"error","error":"invalid user ID"}');
