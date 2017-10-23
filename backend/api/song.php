@@ -3,12 +3,14 @@ include_once("../config.inc.php");
 include_once("../db.inc.php");
 include_once("../utils.inc.php");
 
+$input = json_decode(file_get_contents('php://input'),true);
+
 $uploadOk = true;
 
 // Verify parameter of the song.
-if(empty($_REQUEST['trackName']) || empty($_REQUEST['artist']) || !is_int($_REQUEST['genre']))
+if(empty($input['trackName']) || empty($input['artist']) || !is_int($input['genre']))
 {
-    logError("empty parameter:  the name : " . $_REQUEST['trackName'] . ' or the artist : ' . $_REQUEST['artist'] . ' or the genre : ' . $_REQUEST['genre']);
+    logError("empty parameter:  the name : " . $input['trackName'] . ' or the artist : ' . $input['artist'] . ' or the genre : ' . $input['genre']);
     $uploadOk = false;
 }
 
@@ -32,9 +34,9 @@ if ($uploadOk)
     if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file))
     {
         logError("The file ". $_FILES['fileToUpload']['tmp_name']. " has been uploaded and renamed to $target_file.");
-        if(hasGenre($_REQUEST['genre']))
+        if(hasGenre($input['genre']))
         {
-            registerSong($outputFileName, $_REQUEST['artist'], $_REQUEST['trackName'], $_REQUEST['genre']);
+            registerSong($outputFileName, $input['artist'], $input['trackName'], $input['genre']);
         }
     }
     else

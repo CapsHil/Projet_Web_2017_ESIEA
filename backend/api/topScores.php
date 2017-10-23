@@ -6,8 +6,10 @@
  * Time: 18:40
  */
 
-if(is_int($_REQUEST['nbResults']))
-	$nbResults = $_REQUEST['nbResults'];
+$input = json_decode(file_get_contents('php://input'),true);
+
+if(is_int($input['nbResults']))
+	$nbResults = $input['nbResults'];
 else
 	$nbResults = $defaultNbTopScores;
 
