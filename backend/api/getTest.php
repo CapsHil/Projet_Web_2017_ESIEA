@@ -9,8 +9,6 @@
 	include_once ('../db.inc.php');
 
 	$bdd = connectDB();
-	if($bdd == null)
-		exit('{"error":"could not generate a song"}');
 
 	$nbEntries = getNbSongs($bdd);
 
@@ -30,17 +28,19 @@
 		if($exclusion != null && is_array($exclusion))
 			$hasExclusion = true;
 	}
+	else
+		$exclusion = [];
 
 	//Get the ID of the song that will have to be guessed
-	$question = getRandomSong($bdd);
+	$question = getRandomSongs($bdd);
 	if($question == -1)
-		exit('{"error":"could not generate a song"}');
+		exit('{"status":"error","error":"could not generate a song"}');
 
 	$output = array($question);
 
 	//Get related songs to populate the suggestions
 	$outputLength = 1;
-	$suggestions = getCloseRelativeSong($question, $bdd, $nbSuggestions - 1 + ($hasExclusion ? length($rawExclusion) : 0));
+	$suggestions = getCloseRelativeSong($question, $bdd, $nbSuggestions - 1 + ($hasExclusion ? count($exclusion) : 0));
 
 	while($outputLength < $nbSuggestions)
 	{
@@ -69,9 +69,10 @@
 	$processedOutput = extractDataForSongs($output, $bdd);
 
 	if(empty($processedOutput))
-		exit('{"error":"could not generate output"}');
+		exit('{"status":"error","error":"could not generate output"}');
 
 	$finalOutput = array(
+		'status' => 'success',
 		'songID' => $question,
 		'filename' => "music/" . getFileName($question, $bdd),
 		'suggestions' => $processedOutput);

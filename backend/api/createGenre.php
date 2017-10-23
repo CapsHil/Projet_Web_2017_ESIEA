@@ -12,4 +12,7 @@ else
 	$output = 0;
 }
 
-return $output;
+if($output == 0)
+	echo '{"status":"error","error":"Could not create genre"}';
+else
+	echo '{"status":"success","genreID":' . $output . '}';
