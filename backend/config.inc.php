@@ -6,8 +6,8 @@
  * Time: 14:23
  */
 
-define('dbUserName', "");
-define('dbPassword', "");
+define('dbUserName', "user");
+define('dbPassword', "password");
 define('dbName', 'mysql:host=localhost;dbname=sirius');
 
 $defaultNbSuggestions = 4;
