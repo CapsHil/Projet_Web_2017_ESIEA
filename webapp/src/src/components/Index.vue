@@ -1,13 +1,13 @@
 <template>
   <div class="index">
     <h1>{{ welcome }}</h1>
-    <h1>{{ welcome }}</h1>
-    <answer-button></answer-button>
+    <quizz-game></quizz-game>
   </div>
 </template>
 
 <script>
-  import AnswerButton from './AnswerButton.vue'
+  import QuizzGame from './QuizzGame.vue'
+
   export default {
     name: 'index',
     data () {
@@ -16,8 +16,13 @@
       }
     },
     components: {
-      AnswerButton
+      QuizzGame
     }
   }
 </script>
 
+<style>
+  h1{
+    color: #efefef
+  }
+</style>
