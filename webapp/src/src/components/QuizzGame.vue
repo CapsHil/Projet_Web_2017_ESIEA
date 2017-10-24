@@ -34,7 +34,8 @@
         sound: null,
         answers: [],
         isCorrectAnswer: 3,
-        playing: false
+        playing: false,
+        remainingQuestions: 4
       }
     },
     methods: {
@@ -87,6 +88,12 @@
           alert('Yay! You got it! ')
         } else {
           alert('Noob!')
+        }
+        if (this.remainingQuestions !== 0) {
+          this.remainingQuestions -= 1
+          this.startNewExtract()
+        } else {
+          this.remainingQuestions = 4
         }
       }
     }
