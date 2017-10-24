@@ -1,28 +1,33 @@
-version: '3'
-services:
-        api:
-                build: ./backend/
-                command: php -S 0.0.0.0:8000 -t /api
-                links:
-                        - db
-                ports:
-                        - "8000:8000"
-                volumes:
-                        - ./backend/api:/api
-        db:
-                image: mysql
-                ports:
-                        - "3306:3306"
-                environment:
-                        MYSQL_ROOT_PASSWORD: password
-                        MYSQL_USER: user
-                        MYSQL_PASSWORD: password
-                        MYSQL_DATABASE: sirius
-        web:
-                build: ./webapp/
-                links:
-                        - api
-                volumes:
-                        - ./webapp/src:/src
-                ports:
-                        - "8080:8080"
+api:
+  build: ./backend/
+  command: php -S 0.0.0.0:8000 -t /api
+  links:
+     - mysql
+  ports:
+     - "8000:8000"
+  volumes:
+     - ./backend/api:/api
+mysql:
+   image: mysql
+   environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: sirius
+web:
+   build: ./webapp/
+   links:
+      - api
+   volumes:
+      - ./webapp/src:/src
+   ports:
+      - "8080:8080"
+phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  links:
+    - mysql
+  environment:
+    PMA_HOST: mysql
+    PMA_PORT: 3306
+  ports:
+    - '8081:80'
