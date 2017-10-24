@@ -40,7 +40,7 @@
     methods: {
       startNewExtract () {
         this.playing = 1
-        this.axios.get('http://localhost:8081/extract')
+        this.axios.get('http://localhost:8083/api/extract')
           .then((response) => {
             console.log(response.data)
             // eslint-disable-next-line new-cap
@@ -104,20 +104,61 @@
     /*flex-direction: row;*/
   }
 
+
   .play-button{
+    position:relative;
+    height:500px;
+    width:500px;
+    cursor:pointer;
+    line-height:47px;
+    background-color:#f1f1f1;
+    text-align:center;
+    font-size:30px;
+    display:inline-block;
+    text-shadow:0px -1px 1px rgba(255,255,255,0.5);
+    color:#cfcfcf;
+    /* Transitions */
 
-    margin: auto;
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    background-color: #329f5b;
-    border-style: double;
-    border-color: #0c8346;
-    color: #efefef;
-    transition: transform 0.2s;
-    transition: box-shadow 0.2s;
-  }
+    transition:.1s linear;
+    /* Shadows */
+    box-shadow:inset 0 0 5px 0 rgba(255,255,255,0.5), 0 4px 5px #232323;
+    /* Borders */
+    border-width:1px;
+    border-style:solid;
+    border-left-color:#777;
+    border-right-color:#777;
+    border-top-color:#999;
+    border-bottom:4px solid #555;
+    /* {{ No selectable }} */
+    user-select:none;
 
+
+    border-radius:250px;
+
+    /* Gradient */
+
+    background-image:linear-gradient(top,transparent,rgba(0,0,0,0.2));
+    background-color:#82C43A;
+    border-color:#578720;
+    }
+    .play-button:hover{
+      color:#efefef;
+      box-shadow:  2px 8px 5px #232323;
+      /*{Gradient}*/
+
+      background-image:linear-gradient(top,transparent,rgba(0,0,0,0.5));
+      transform: translateY(-4px);
+    }
+    .play-button:active{
+      margin-top:4px;
+      color:#cecece;
+      border:1px solid #232323;
+      /*{Shadow}*/
+      box-shadow:inset 0 2px 50px 1px #333, 0 4px 5px #232323;
+    }
+
+
+  /**/
   .timer{
     color: #efefef;
     padding:40px;
@@ -133,17 +174,8 @@
     visibility: visible;
   }
 
-  .not-playing:hover{
-    transform: translateY(-4px);
-    box-shadow: 2px 8px 5px #232323;
-  }
-
-  .not-playing:active{
-    transform: translateY(0px);
-    box-shadow: 0 0 0 #000000;
-  }
-
   .playing{
+    display: none;
     transform: translateY(-4px);
     box-shadow: 2px 8px 5px #232323;
     background-color: #232323;
@@ -163,11 +195,17 @@
     transition: box-shadow 0.2s;
     overflow: hidden;
     font-size: 25px;
+    visibility: hidden;
+  }
+
+  .active-button{
+    visibility: visible;
   }
 
   .active-button:hover{
     transform: translateY(-2px);
     box-shadow: 2px 8px 5px #232323;
+    visibility: visible;
   }
 </style>
 
