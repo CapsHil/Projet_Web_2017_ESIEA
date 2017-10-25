@@ -2,11 +2,11 @@ api:
   build: ./backend/
   command: php -S 0.0.0.0:8000 -t /api
   links:
-     - mysql
+     - mysql:mysql
   ports:
-     - "8000:8000"
+     - "8082:8000"
   volumes:
-     - ./backend/api:/api
+     - ./backend:/api
 mysql:
    image: mysql
    environment:

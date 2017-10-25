@@ -11,6 +11,7 @@
 	function getTest($input)
 	{
 		$bdd = connectDB();
+		echo 'coucou';
 
 		$nbEntries = getNbSongs($bdd);
 

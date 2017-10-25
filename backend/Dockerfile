@@ -1,3 +1,3 @@
 FROM php
-ADD api /api
+ADD . /api
 EXPOSE 8000

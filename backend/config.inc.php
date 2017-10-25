@@ -8,7 +8,7 @@
 
 define('dbUserName', "user");
 define('dbPassword', "password");
-define('dbName', 'mysql:host=localhost;dbname=sirius');
+define('dbName', 'mysql: host=mysql;dbname=sirius');
 
 $defaultNbSuggestions = 4;
 $defaultNbMessages = 200;

@@ -10,7 +10,7 @@ function logError($log=null)
 {
     if($log !== null)
     {
-        if($file = fopen('../log/security.log', 'a+'))
+        if($file = fopen('security.log', 'a+'))
         {
             if(fprintf($file, '"'.date('H:i - d/M/Y - ').'","'.$_SERVER['REMOTE_ADDR'].'","'.$log."\"\n"))
             {
