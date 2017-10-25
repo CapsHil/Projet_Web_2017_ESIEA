@@ -77,6 +77,12 @@
                 this.msg = 'Play'
                 this.correctAnswer = 'NaN'
                 this.answers = []
+                if (this.remainingQuestions !== 0) {
+                  this.remainingQuestions -= 1
+                  this.startNewExtract()
+                } else {
+                  this.remainingQuestions = 4
+                }
               }
             })
           })
