@@ -14,6 +14,10 @@ mysql:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: sirius
+   ports:
+      - "3306:3306"
+   volumes:
+      - ./backend/data:/docker-entrypoint-initdb.d
 web:
    build: ./webapp/
    links:
