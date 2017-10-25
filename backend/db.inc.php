@@ -9,6 +9,8 @@
 include_once('config.inc.php');
 include_once('utils.inc.php');
 
+returnHeader();
+
 function connectDB()
 {
     try

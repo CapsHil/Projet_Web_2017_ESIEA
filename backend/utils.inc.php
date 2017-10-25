@@ -6,6 +6,11 @@
  * Time: 14:27
  */
 
+function returnHeader()
+{
+	header('Access-Control-Allow-Origin: *');
+}
+
 function logError($log=null)
 {
     if($log !== null)
