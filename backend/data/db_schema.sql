@@ -155,6 +155,8 @@ ALTER TABLE `user`
 
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_1.mp3', 'Test1', 'Test1');
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_2.mp3', 'Test2', 'Test2');
+INSERT INTO `genre` (`genreID`, `name`) VALUES ('1', 'Série/Film');
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
