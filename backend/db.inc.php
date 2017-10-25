@@ -112,7 +112,7 @@ function getRandomSongs($bdd = null, $nbSongs = 1)
 	//      increase the odds that the one after it get selected. If too big of a problem, those IDs aren't
 	//      used elsewhere and can be recomputed whenever necessary, as long as the application is down.
 
-	$req = $bdd->prepare('SELECT `ID`
+	$req = $bdd->prepare('SELECT r1.`ID`
 		FROM `music` AS r1 JOIN
 		   (SELECT (RAND() *
 		                 (SELECT MAX(ID)
