@@ -41,7 +41,12 @@
     methods: {
       startNewExtract () {
         this.playing = 1
-        this.axios.get('http://localhost:8083/api/extract')
+        this.axios.get('http://localhost:8082/api/test.php', {headers:
+        {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+          'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+        }})
           .then((response) => {
             console.log(response.data)
             // eslint-disable-next-line new-cap
@@ -215,4 +220,3 @@
     visibility: visible;
   }
 </style>
-

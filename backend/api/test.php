@@ -11,7 +11,6 @@
 	function getTest($input)
 	{
 		$bdd = connectDB();
-		echo 'coucou';
 
 		$nbEntries = getNbSongs($bdd);
 
@@ -80,7 +79,7 @@
 		$finalOutput = array(
 			'status' => 'success',
 			'songID' => $question,
-			'filename' => $GLOBALS['publicMusicDirectory'] . getFileName($question, $bdd),
+			'filename' => getFileName($question, $bdd),
 			'suggestions' => $processedOutput);
 
 		echo json_encode($finalOutput);
