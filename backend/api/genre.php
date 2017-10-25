@@ -8,7 +8,7 @@ switch ($method)
 {
 	case 'GET':
 	{
-		$req = connectDB()->prepare("SELECT * from `genres` ORDER BY `name`");
+		$req = connectDB()->prepare("SELECT * from `genre` ORDER BY `name`");
 		$req->execute();
 
 		$genres = [];
