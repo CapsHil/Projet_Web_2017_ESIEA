@@ -50,13 +50,13 @@
           .then((response) => {
             console.log(response.data)
             // eslint-disable-next-line new-cap
-            this.sound = new buzz.sound(require('../assets/' + response.data.extractFilename))
-            this.correctAnswer = response.data.correctAnswer
+            this.sound = new buzz.sound(require('../assets/' + response.data.filename))
+            this.correctAnswer = response.data.songID
             this.answers = []
-            this.answers.push(response.data.answerLabels[0])
-            this.answers.push(response.data.answerLabels[1])
-            this.answers.push(response.data.answerLabels[2])
-            this.answers.push(response.data.answerLabels[3])
+            this.answers.push(response.data.suggestions[0])
+            this.answers.push(response.data.suggestions[0])
+            this.answers.push(response.data.suggestions[0])
+            this.answers.push(response.data.suggestions[0])
             this.sound.play()
             this.msg = 'Playing'
             this.sound.bind('timeupdate', () => {
