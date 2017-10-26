@@ -53,10 +53,10 @@
             this.sound = new buzz.sound(require('../assets/' + response.data.filename))
             this.correctAnswer = response.data.songID
             this.answers = []
-            this.answers.push(response.data.suggestions[0])
-            this.answers.push(response.data.suggestions[0])
-            this.answers.push(response.data.suggestions[0])
-            this.answers.push(response.data.suggestions[0])
+            this.answers.push(response.data.suggestions[0].trackName)
+            this.answers.push(response.data.suggestions[0].trackName)
+            this.answers.push(response.data.suggestions[0].trackName)
+            this.answers.push(response.data.suggestions[0].trackName)
             this.sound.play()
             this.msg = 'Playing'
             this.sound.bind('timeupdate', () => {
