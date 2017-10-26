@@ -153,8 +153,12 @@ ALTER TABLE `music`
 ALTER TABLE `user`
   MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;COMMIT;
 
-INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_1.mp3', 'Test1', 'Test1');
-INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_2.mp3', 'Test2', 'Test2');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_1.mp3', 'The Walking Dead', 'The Walking Dead');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_6.mp3', 'James Bond', 'James Bond');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_8.mp3', 'Gladiator', 'Gladiator');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_17.mp3', 'Back to the Futur', 'Back to the Futur');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_24.mp3', 'Transformers', 'Transformers');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_25.mp3', 'Star Wars', 'Star Wars');
 INSERT INTO `genre` (`genreID`, `name`) VALUES ('1', 'Série/Film');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
