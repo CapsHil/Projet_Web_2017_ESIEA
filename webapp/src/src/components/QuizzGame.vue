@@ -7,12 +7,12 @@
       <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
     </div>
     <div class="row">
-      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions, 'answered-button': answeredButton }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
-      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="playing == 0">{{ answers[1] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': colors[0] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': colors[1] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="playing == 0">{{ answers[1] }}</button>
     </div>
     <div class="row">
-      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="playing == 0">{{ answers[2] }}</button>
-      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="playing == 0">{{ answers[3] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': colors[2] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="playing == 0">{{ answers[2] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': colors[3] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="playing == 0">{{ answers[3] }}</button>
     </div>
     <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
   </div>
@@ -22,6 +22,7 @@
 <script>
   import buzz from 'buzz'
   import axios from 'axios'
+  // import blockly from 'node-blockly'
 
   export default {
     name: 'quizz-game',
@@ -33,6 +34,7 @@
     },
     data () {
       return {
+        workspace: null,
         msg: 'Play',
         timer: '00:10',
         timerBuffer: null,
@@ -46,7 +48,9 @@
         suggestions: [],
         remainingQuestions: 4,
         skip: 'Skip this track',
-        skipEnabled: false
+        skipEnabled: false,
+        buttonColor: '',
+        colors: ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8']
       }
     },
     methods: {
@@ -65,6 +69,7 @@
         this.startNewExtract()
       },
       startNewExtract () {
+        this.buttonColor = ''
         if (this.displayPropositions === false) {
           this.skipEnabled = true
         }
@@ -130,9 +135,10 @@
         this.msg = 'Play'
         this.playing = 0
         if (this.correctAnswer === givenAnswer) {
-          this.displayCorrectAnswer(buttonId, this.suggestions.indexOf(this.correctAnswer))
+          this.colors[buttonId] = 'green'
           alert('Yay! You got it! ')
         } else {
+          this.colors[buttonId] = 'FireBrick'
           alert('Noob!' + this.answers[this.suggestions.indexOf(this.correctAnswer)])
         }
         if (this.remainingQuestions !== 0) {
@@ -296,7 +302,11 @@
     box-shadow: 1px 4px 5px #232323;
   }
 
-  .answered-button{
+  .red{
+    background-color: red;
+  }
+
+  .green{
     background-color: green;
   }
 
