@@ -62,7 +62,14 @@
       },
       skipTrack () {
         this.sound.stop()
-        this.startNewExtract()
+        if (this.remainingQuestions !== 0) {
+          this.remainingQuestions -= 1
+          this.startNewExtract()
+        } else {
+          this.remainingQuestions = 4
+          this.playing = 0
+          this.skipEnabled = false
+        }
       },
       startNewExtract () {
         if (this.displayPropositions === false) {
