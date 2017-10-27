@@ -142,7 +142,9 @@ function getNbSongs($bdd = null)
 
 	$req = $bdd->prepare('SELECT COUNT() FROM `music`');
 	$req->execute();
-	$data = $req->fetch();
+	$count = $req->fetch();
+	$data = $count[0];
+	
 	$req->closeCursor();
 
 	return $data;
@@ -155,16 +157,15 @@ function getCloseRelativeSong($songID, $bdd = null, $maxReturn = 0)
 
 	$genre = getGenreForID($songID);
 
-	if(empty($maxReturn))
+	$sql = 'SELECT `ID` FROM `music` WHERE `genreID` = :1 AND `ID` != :2 ORDER BY RAND()';
+
+	if(!empty($maxReturn) && is_numeric($maxReturn))
 	{
-		$req = $bdd->prepare('SELECT `ID` FROM `music` WHERE `genreID` = :1 AND `ID` != :2 ORDER BY RAND()');
-		$req->execute(array(':1' => $genre, ':2' => $songID));
+		$sql .= ' LIMIT ' . (int) $maxReturn;
 	}
-	else
-	{
-		$req = $bdd->prepare('SELECT `ID` FROM `music` WHERE `genreID` = :1 AND `ID` != :2 ORDER BY RAND() LIMIT :3');
-		$req->execute(array(':1' => $genre, ':2' => $songID, ':3' => $maxReturn));
-	}
+
+	$req = $bdd->prepare($sql);
+	$req->execute(array(':1' => $genre, ':2' => $songID));
 	$data = $req->fetch();
 	$req->closeCursor();
 
@@ -225,7 +226,8 @@ function hasSong($songID, $bdd = null)
 
 	$req = $bdd->prepare('SELECT COUNT(*) FROM `music` WHERE `ID` = :1');
 	$req->execute([':1' => $songID]);
-	$output = $req->fetchColumn() == 1;
+	$count = $req->fetch();
+	$output = $count[0] == 1;
 	$req->closeCursor();
 
 	return $output;
