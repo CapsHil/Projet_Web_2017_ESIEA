@@ -28,12 +28,13 @@ switch ($method)
 	}
 	case 'POST':
 	{
-		if(empty($input['strike']) || !is_numeric($input['strike']) || empty($input['name']))
+		if(empty($input['strike']) || !is_numeric($input['strike']) || empty($input['username']))
 		{
 			exit('{"status":"error", "error": "invalid request"}');
 		}
 
-		commitStrike($input['name'], $input['strike']);
+		commitStrike($input['username'], $input['strike']);
+		echo '{"status":"success"}';
 		break;
 	}
 }

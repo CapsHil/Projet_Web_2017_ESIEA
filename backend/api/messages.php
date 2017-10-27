@@ -41,7 +41,7 @@ function sendMessage($input)
 	if(empty($input['message']))
 		return;
 
-	insertMessageIntoDB($_REQUEST['userName'], $input['message']);
+	insertMessageIntoDB($input['username'], $input['message']);
 	exit('{"status":"success"}');
 }
 

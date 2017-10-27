@@ -264,16 +264,19 @@ function commitStrike($userName, $strike)
 {
 	$bdd = connectDB();
 
-	$req = $bdd->prepare('SELECT COUNT(`score`) FROM `highScore` WHERE `userName` = :1');
+	$req = $bdd->prepare('SELECT `score` FROM `highScore` WHERE `userName` = :1');
 	$req->execute([':1' => $userName]);
 	$data = $req->fetch();
 	$req->closeCursor();
 
-	if($data[0])
+	if(empty($data))
 		$req = $bdd->prepare('INSERT INTO `highScore`(`userName`, `score`) VALUES (:2, :1)');
 
-	else
+	else if($data['score'] < $strike)
 		$req = $bdd->prepare('UPDATE `highScore` SET `score` = :1 WHERE `userName` = :2');
+
+	else
+		return;
 
 	$req->execute([':1' => $strike, ':2' => $userName]);
 	$req->closeCursor();
