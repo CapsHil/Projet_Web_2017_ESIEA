@@ -201,11 +201,11 @@
     position: absolute;
     top: 0%;
     right: 0%;
-    visibility: hidden;
+    display: inline;
   }
 
   .show-timer{
-    visibility: visible;
+    display: none;
   }
 
   .playing{
@@ -229,11 +229,11 @@
     transition: box-shadow 0.2s;
     overflow: hidden;
     font-size: 25px;
-    visibility: hidden;
+    display: none;
   }
 
   .active-button{
-    visibility: visible;
+    display: inline;
   }
 
   .active-button:hover{
@@ -260,11 +260,16 @@
     box-shadow: 1px 4px 5px #232323;
   }
 
-  .return-button:hover{
+  .return-button:hover {
     background-color: #dec05b;
     color: #232323;
     transform: translateY(-4px);
     box-shadow: 2px 8px 5px #232323;
-
   }
+
+  .return-button:active{
+    transform: translateY(0px);
+    box-shadow: 1px 4px 5px #232323;
+  }
+
 </style>
