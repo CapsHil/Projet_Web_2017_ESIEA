@@ -39,8 +39,9 @@
         axios: axios,
         sound: null,
         answers: [],
-        isCorrectAnswer: 3,
+        isCorrectAnswer: 'NàN',
         playing: false,
+        suggestions: [],
         remainingQuestions: 4
       }
     },
@@ -69,10 +70,15 @@
             this.sound = new buzz.sound(require('../assets/' + response.data.filename))
             this.correctAnswer = response.data.songID
             this.answers = []
+            this.suggestions = []
+            this.suggestions.push(response.data.suggestions[0].songID)
+            this.suggestions.push(response.data.suggestions[1].songID)
+            this.suggestions.push(response.data.suggestions[2].songID)
+            this.suggestions.push(response.data.suggestions[3].songID)
             this.answers.push(response.data.suggestions[0].trackName)
-            this.answers.push(response.data.suggestions[0].trackName)
-            this.answers.push(response.data.suggestions[0].trackName)
-            this.answers.push(response.data.suggestions[0].trackName)
+            this.answers.push(response.data.suggestions[1].trackName)
+            this.answers.push(response.data.suggestions[2].trackName)
+            this.answers.push(response.data.suggestions[3].trackName)
             this.sound.play()
             this.msg = 'Playing'
             this.sound.bind('timeupdate', () => {
@@ -107,14 +113,14 @@
           })
       },
       displayToggle (buttonId) {
+        var givenAnswer = this.suggestions[buttonId]
         this.sound.stop()
         this.msg = 'Play'
         this.playing = 0
-        this.answers = []
-        if (this.correctAnswer === buttonId) {
+        if (this.correctAnswer === givenAnswer) {
           alert('Yay! You got it! ')
         } else {
-          alert('Noob!')
+          alert('Noob!' + this.answers[this.suggestions.indexOf(this.correctAnswer)])
         }
         if (this.remainingQuestions !== 0) {
           this.remainingQuestions -= 1
