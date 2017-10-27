@@ -1,12 +1,12 @@
 <template>
   <div class="index">
     <h1>{{ welcome }}</h1>
-    <quizz-game></quizz-game>
+    <menu-component></menu-component>
   </div>
 </template>
 
 <script>
-  import QuizzGame from './QuizzGame.vue'
+  import MenuComponent from './MenuComponent.vue'
 
   export default {
     name: 'index',
@@ -16,7 +16,7 @@
       }
     },
     components: {
-      QuizzGame
+      MenuComponent
     }
   }
 </script>

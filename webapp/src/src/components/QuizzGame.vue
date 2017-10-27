@@ -1,18 +1,18 @@
 <template>
   <div class="quizz-game">
     <div>for dev purpose: {{ correctAnswer }}</div>
-
+    <button v-on:click="returnToMenu()">return to menu</button>
     <div class="row game-header">
       <button class="play-button" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1">{{ msg }}</button>
       <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
     </div>
     <div class="row">
-      <button class="answer-button" v-bind:class="{ 'active-button': playing }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
-      <button class="answer-button" v-bind:class="{ 'active-button': playing }" v-on:click="displayToggle(1)" :disabled="playing == 0">{{ answers[1] }}</button>
+      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
+      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="playing == 0">{{ answers[1] }}</button>
     </div>
     <div class="row">
-      <button class="answer-button" v-bind:class="{ 'active-button': playing }" v-on:click="displayToggle(2)" :disabled="playing == 0">{{ answers[2] }}</button>
-      <button class="answer-button" v-bind:class="{ 'active-button': playing }" v-on:click="displayToggle(3)" :disabled="playing == 0">{{ answers[3] }}</button>
+      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="playing == 0">{{ answers[2] }}</button>
+      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="playing == 0">{{ answers[3] }}</button>
     </div>
   </div>
 
@@ -24,6 +24,12 @@
 
   export default {
     name: 'quizz-game',
+    props: {
+      displayPropositions: {
+        type: Boolean,
+        default: true
+      }
+    },
     data () {
       return {
         msg: 'Play',
@@ -39,6 +45,16 @@
       }
     },
     methods: {
+      returnToMenu () {
+        if (this.sound !== null) {
+          this.sound.stop()
+        }
+        this.msg = 'Play'
+        this.playing = 0
+        this.answers = []
+        this.remainingQuestions = 4
+        this.$emit('return')
+      },
       startNewExtract () {
         this.playing = 1
         this.axios.get('http://localhost:8082/api/test.php', {headers:
@@ -224,5 +240,9 @@
     transform: translateY(-2px);
     box-shadow: 2px 8px 5px #232323;
     visibility: visible;
+  }
+
+  .hide{
+    display: none
   }
 </style>
