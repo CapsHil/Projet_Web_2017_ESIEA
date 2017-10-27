@@ -14,6 +14,7 @@
       <button class="answer-button" v-bind:style="{ 'background-color': colors[2] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="playing == 0">{{ answers[2] }}</button>
       <button class="answer-button" v-bind:style="{ 'background-color': colors[3] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="playing == 0">{{ answers[3] }}</button>
     </div>
+    <h1 v-bind:class="{ 'hide': !displayAnswer }">{{displayedAnswer}}</h1>
     <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
   </div>
 
@@ -50,7 +51,9 @@
         skip: 'Skip this track',
         skipEnabled: false,
         buttonColor: '',
-        colors: ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8']
+        colors: ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8'],
+        displayedAnswer: '',
+        displayAnswer: false
       }
     },
     methods: {
@@ -104,6 +107,7 @@
             this.answers.push(response.data.suggestions[1].trackName)
             this.answers.push(response.data.suggestions[2].trackName)
             this.answers.push(response.data.suggestions[3].trackName)
+            this.displayedAnswer = this.answers[this.suggestions.indexOf(this.correctAnswer)]
             this.sound.play()
             this.msg = 'Playing'
             this.sound.bind('timeupdate', () => {
@@ -116,10 +120,13 @@
                 this.timer = '00:' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
               }
               // console.log(this.timer)
-
               if (this.timer === '00:00') {
+                this.displayAnswer = true
+              }
+
+              if (this.timer === '00:0-3') {
+                this.displayAnswer = false
                 this.sound.stop()
-                alert('NOOB! The correct answer was: ' + this.answers[this.correctAnswer])
                 this.playing = 0
                 this.msg = 'Play'
                 this.correctAnswer = 'NaN'
