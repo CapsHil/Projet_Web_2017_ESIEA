@@ -150,22 +150,16 @@
         this.msg = 'Play'
         this.playing = 0
         if (this.correctAnswer === givenAnswer) {
-          this.colors[buttonId] = 'green'
-          alert('Yay! You got it! ')
+          this.colors[buttonId] = '#409900'
         } else {
-          this.colors[buttonId] = 'FireBrick'
-          alert('Noob!' + this.answers[this.suggestions.indexOf(this.correctAnswer)])
+          this.colors[buttonId] = '#de603b'
+          this.colors[this.suggestions.indexOf(this.correctAnswer)] = '#409900'
         }
         if (this.remainingQuestions !== 0) {
           this.remainingQuestions -= 1
           this.startNewExtract()
         } else {
           this.remainingQuestions = 4
-        }
-      },
-      displayCorrectAnswer (givenAnswerButtonId, correstAnswerButtonId) {
-        if (givenAnswerButtonId === correstAnswerButtonId) {
-          this.buttonColor = 'green'
         }
       }
     }
