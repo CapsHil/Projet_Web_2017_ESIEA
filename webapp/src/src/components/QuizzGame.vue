@@ -14,6 +14,7 @@
       <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="playing == 0">{{ answers[2] }}</button>
       <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="playing == 0">{{ answers[3] }}</button>
     </div>
+    <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
   </div>
 
 </template>
@@ -42,8 +43,10 @@
         answers: [],
         isCorrectAnswer: 'NàN',
         playing: false,
+        suggestions: [],
         remainingQuestions: 4,
-        suggestions: []
+        skip: 'Skip this track',
+        skipEnabled: false
       }
     },
     methods: {
@@ -57,7 +60,14 @@
         this.remainingQuestions = 4
         this.$emit('return')
       },
+      skipTrack () {
+        this.sound.stop()
+        this.startNewExtract()
+      },
       startNewExtract () {
+        if (this.displayPropositions === false) {
+          this.skipEnabled = true
+        }
         this.playing = 1
         this.axios.get('http://localhost:8082/api/test.php', {headers:
         {
