@@ -58,6 +58,7 @@
         this.answers = []
         this.remainingQuestions = 4
         this.$emit('return')
+        this.skipEnabled = false
       },
       skipTrack () {
         this.sound.stop()
