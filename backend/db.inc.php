@@ -123,13 +123,13 @@ function getRandomSongs($bdd = null, $nbSongs = 1)
 		WHERE r1.ID >= r2.ID
 		ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
 
+	$output = [];
+
 	if($req->execute())
 	{
-		$data = $req->fetch();
-		$output = $data['ID'];
+		while($entry = $req->fetch())
+			array_push($output, $entry['ID']);
 	}
-	else
-		$output = -1;
 
 	$req->closeCursor();
 	return $output;
@@ -142,9 +142,7 @@ function getNbSongs($bdd = null)
 
 	$req = $bdd->prepare('SELECT COUNT() FROM `music`');
 	$req->execute();
-	$count = $req->fetch();
-	$data = $count[0];
-	
+	$data = $req->fetch();
 	$req->closeCursor();
 
 	return $data;
@@ -226,8 +224,7 @@ function hasSong($songID, $bdd = null)
 
 	$req = $bdd->prepare('SELECT COUNT(*) FROM `music` WHERE `ID` = :1');
 	$req->execute([':1' => $songID]);
-	$count = $req->fetch();
-	$output = $count[0] == 1;
+	$output = $req->fetchColumn() == 1;
 	$req->closeCursor();
 
 	return $output;

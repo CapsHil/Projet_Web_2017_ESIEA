@@ -34,11 +34,12 @@
 			$exclusion = [];
 
 		//Get the ID of the song that will have to be guessed
-		$question = getRandomSongs($bdd);
-		if($question == -1)
+		$questions = getRandomSongs($bdd);
+		if(empty($questions))
 			exit('{"status":"error","error":"could not generate a song"}');
 
-		$output = array($question);
+		$question = $questions[0];
+		$output = [$question];
 
 		//Get related songs to populate the suggestions
 		$outputLength = 1;
@@ -46,11 +47,12 @@
 
 		$tries = 0;
 
-		while($outputLength < $nbSuggestions && $tries < 6)
+		while($outputLength < $nbSuggestions && $tries < 15)
 		{
 			foreach ($suggestions as $relative)
 			{
-				if((!$hasExclusion && $tries < 4) || (!in_array($relative, $exclusion) && $tries < 2))
+				if((!in_array($relative, $output) || $tries >= 10) && 
+					(!$hasExclusion || !in_array($relative, $exclusion) || $tries >= 5))
 				{
 					array_push($output, $relative);
 					$outputLength += 1;
