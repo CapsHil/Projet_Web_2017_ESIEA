@@ -81,6 +81,7 @@
         }
       },
       startNewExtract () {
+        this.timeStamp = null
         this.buttonColor = ''
         if (this.displayPropositions === false) {
           this.skipEnabled = true
