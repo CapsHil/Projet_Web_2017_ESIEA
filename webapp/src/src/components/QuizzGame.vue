@@ -112,7 +112,17 @@
             this.sound.play()
             this.msg = 'Playing'
             this.sound.bind('timeupdate', () => {
-              this.timerBuffer = buzz.toTimer(this.sound.getTime())
+              var tmp = buzz.toTimer(this.sound.getTime())
+              if (!this.buttonClicked) {
+                this.timerBuffer = buzz.toTimer(this.sound.getTime())
+                this.tmp2 = 10 - (this.timerBuffer[3] + this.timerBuffer[4])
+              } else {
+                if (this.tmp2 !== 10) {
+                  this.timerBuffer = '00:' + (parseInt(tmp[4]) + this.tmp2)
+                }
+              }
+              console.log('tmp2: ' + this.tmp2)
+              console.log('timeBuffer: ' + this.timerBuffer)
               if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) !== 10) {
                 this.timer = '00:0' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
                 // eslint-disable-next-line
@@ -132,6 +142,8 @@
                 this.msg = 'Play'
                 this.correctAnswer = 'NaN'
                 this.answers = []
+                this.buttonClicked = false
+                this.colors = ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8']
                 if (this.remainingQuestions !== 0) {
                   this.remainingQuestions -= 1
                   this.startNewExtract()
