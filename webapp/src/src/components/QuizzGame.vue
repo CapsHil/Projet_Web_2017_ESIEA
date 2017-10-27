@@ -53,7 +53,8 @@
         buttonColor: '',
         colors: ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8'],
         displayedAnswer: '',
-        displayAnswer: false
+        displayAnswer: false,
+        timeStamp: null
       }
     },
     methods: {
@@ -124,7 +125,7 @@
                 this.displayAnswer = true
               }
 
-              if (this.timer === '00:0-3') {
+              if (this.timer === '00:0-3' || this.timer === this.timeStamp) {
                 this.displayAnswer = false
                 this.sound.stop()
                 this.playing = 0
@@ -146,20 +147,20 @@
       },
       displayToggle (buttonId) {
         var givenAnswer = this.suggestions[buttonId]
-        this.sound.stop()
-        this.msg = 'Play'
-        this.playing = 0
         if (this.correctAnswer === givenAnswer) {
           this.colors[buttonId] = '#409900'
         } else {
           this.colors[buttonId] = '#de603b'
           this.colors[this.suggestions.indexOf(this.correctAnswer)] = '#409900'
         }
-        if (this.remainingQuestions !== 0) {
-          this.remainingQuestions -= 1
-          this.startNewExtract()
-        } else {
-          this.remainingQuestions = 4
+        this.timeStamp = buzz.toTimer(this.sound.getTime())
+        console.log('you clicked at' + this.timeStamp)
+        if (10 - (this.timeStamp[3] + this.timeStamp[4]) !== 10) {
+          this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
+          // eslint-disable-next-line
+        }
+        else {
+          this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
         }
       }
     }
