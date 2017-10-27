@@ -6,7 +6,7 @@
         <span>{{hintLabel}}</span>
         <button v-on:click="toggleHints()">{{hintStatus}}</button>
       </div>
-      <button v-bind:class="{ 'show': !playing, 'hide': playing }" v-on:click="startGame()" :disabled="playing == 1">{{ start }}</button>
+      <button v-on:click="startGame()" :disabled="playing == 1">{{ start }}</button>
     </div>
     <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-on:return="endGame()"></quizz-game>
   </div>

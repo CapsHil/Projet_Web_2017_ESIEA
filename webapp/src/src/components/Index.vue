@@ -7,6 +7,7 @@
 
 <script>
   import MenuComponent from './MenuComponent.vue'
+  import 'font-awesome/css/font-awesome.css'
 
   export default {
     name: 'index',

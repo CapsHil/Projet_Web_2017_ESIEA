@@ -1,7 +1,7 @@
 <template>
   <div class="quizz-game">
     <div>for dev purpose: {{ correctAnswer }}</div>
-    <button v-on:click="returnToMenu()">return to menu</button>
+    <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
     <div class="row game-header">
       <button class="play-button" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1">{{ msg }}</button>
       <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
@@ -244,5 +244,27 @@
 
   .hide{
     display: none
+  }
+
+  .return-button{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    line-height: 60px;
+    background-color: #de603b;
+    color: #efefef;
+    position: absolute;
+    left: 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+    box-shadow: 1px 4px 5px #232323;
+  }
+
+  .return-button:hover{
+    background-color: #dec05b;
+    color: #232323;
+    transform: translateY(-4px);
+    box-shadow: 2px 8px 5px #232323;
+
   }
 </style>
