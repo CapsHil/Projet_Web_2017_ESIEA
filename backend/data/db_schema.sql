@@ -160,7 +160,6 @@ ALTER TABLE `user`
 -- INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_24.mp3', 'Transformers', 'Transformers');
 -- INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_25.mp3', 'Star Wars', 'Star Wars');
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_1.mp3', "The Walking Dead", "The Walking Dead");
-INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_2.mp3', "Apocalypse Now", "Apocalypse Now");
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_2.mp3', "Le diner de con", "Le diner de con");
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_3.mp3', "Borderland 2", "Borderland 2");
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, '1', 'extract_4.mp3', "Fame", "Fame");
