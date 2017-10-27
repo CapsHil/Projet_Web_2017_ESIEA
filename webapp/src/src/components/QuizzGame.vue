@@ -3,7 +3,7 @@
     <div>for dev purpose: {{ correctAnswer }}</div>
     <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
     <div class="row game-header">
-      <button class="play-button" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1">{{ msg }}</button>
+      <button class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1"><!--{{ msg }}--></button>
       <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
     </div>
     <div class="row">
@@ -144,10 +144,10 @@
     height:500px;
     width:500px;
     cursor:pointer;
-    line-height:47px;
+    line-height:500px;
     background-color:#f1f1f1;
     text-align:center;
-    font-size:30px;
+    font-size:150px;
     display:inline-block;
     text-shadow:0px -1px 1px rgba(255,255,255,0.5);
     color:#cfcfcf;
@@ -201,11 +201,11 @@
     position: absolute;
     top: 0%;
     right: 0%;
-    display: inline;
+    display: none;
   }
 
   .show-timer{
-    display: none;
+    display: inline;
   }
 
   .playing{

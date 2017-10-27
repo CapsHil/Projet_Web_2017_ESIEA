@@ -5,10 +5,10 @@
       <div class="options-list">
         <div class="options-element">
           <span>{{hintLabel}}</span>
-          <div class="options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
+          <div class="button options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
         </div>
       </div>
-      <button v-on:click="startGame()" :disabled="playing == 1">{{ start }}</button>
+      <div v-on:click="startGame()" class="button" :disabled="playing == 1">{{ start }}</div>
     </div>
     <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-on:return="endGame()"></quizz-game>
   </div>
@@ -78,7 +78,7 @@
     margin: auto;
     }
 
-  .options-button{
+  .button{
     padding: 5px;
     width: 100px;
     height: 40px;
@@ -88,22 +88,32 @@
     box-shadow: 1px 4px 5px #232323;
     margin: 20px;
     cursor: pointer;
-    background-color: #409900;
     display: inline-block;
     transition: all 0.2s;
+    background-color: #8e8e8e;
+    color: #efefef;
+  }
+
+  .button:hover{
+    box-shadow: 2px 8px 5px #232323;
+    transform: translateY(-4px);
+    background-color: #90ff00;
+    color: #555555;
+  }
+
+  .button:active{
+    transform: translateY(0px);
+    box-shadow: 1px 4px 5px #232323;
+  }
+
+  .options-button{
+    background-color: #409900;
     color: #efefef;
   }
 
   .options-button:hover{
     background-color: #90ff00;
-    box-shadow: 2px 8px 5px #232323;
     color: #555555;
-    transform: translateY(-4px);
-  }
-
-  .options-button:active{
-    transform: translateY(0px);
-    box-shadow: 1px 4px 5px #232323;
   }
 
   .disabled{
