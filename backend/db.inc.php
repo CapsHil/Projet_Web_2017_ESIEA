@@ -232,12 +232,12 @@ function hasSong($songID, $bdd = null)
 
 //Chat management
 
-function insertMessageIntoDB($userID, $message)
+function insertMessageIntoDB($userName, $message)
 {
-	$req = connectDB()->prepare("INSERT INTO `chatbox`(`messageText`, `userID`) VALUES (:1, :2)");
+	$req = connectDB()->prepare("INSERT INTO `chatbox`(`messageText`, `userName`) VALUES (:1, :2)");
 	$output = $req->execute([
 		':1' => $message,
-		':2' => $userID
+		':2' => $userName
 	]);
 
 	return $output;
