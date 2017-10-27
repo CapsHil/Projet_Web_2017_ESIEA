@@ -63,10 +63,18 @@
         this.answers = []
         this.remainingQuestions = 4
         this.$emit('return')
+        this.skipEnabled = false
       },
       skipTrack () {
         this.sound.stop()
-        this.startNewExtract()
+        if (this.remainingQuestions !== 0) {
+          this.remainingQuestions -= 1
+          this.startNewExtract()
+        } else {
+          this.remainingQuestions = 4
+          this.playing = 0
+          this.skipEnabled = false
+        }
       },
       startNewExtract () {
         this.buttonColor = ''
