@@ -24,7 +24,7 @@
 	$hasExclusion = false;
 	if(isset($input['excludeRecentlyTried']))
 	{
-		$exclusion = json_decode($input['excludeRecentlyTried']);
+		$exclusion = $input['excludeRecentlyTried'];
 
 		if($exclusion != null && is_array($exclusion))
 			$hasExclusion = true;

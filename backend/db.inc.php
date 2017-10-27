@@ -164,16 +164,13 @@ function getCloseRelativeSong($songID, $bdd = null, $maxReturn = 0)
 
 	$req = $bdd->prepare($sql);
 	$req->execute(array(':1' => $genre, ':2' => $songID));
-	$data = $req->fetch();
-	$req->closeCursor();
 
 	$output = array();
 
-	foreach ($data as $entry)
-	{
-		array_push($output, $entry['ID']);
-	}
+	while($data = $req->fetch())
+		array_push($output, $data['ID']);
 
+	$req->closeCursor();
 	return $output;
 }
 
