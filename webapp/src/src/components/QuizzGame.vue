@@ -1,13 +1,13 @@
 <template>
   <div class="quizz-game">
-    <div>for dev purpose: {{ correctAnswer }}</div>
+    <div>for dev purpose: {{ correctAnswerButton }}</div>
     <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
     <div class="row game-header">
       <button class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1"><!--{{ msg }}--></button>
       <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
     </div>
     <div class="row">
-      <button class="answer-button" v-bind:style="{ 'background-color': buttonColor}" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
+      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions, 'answered-button': answeredButton }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
       <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="playing == 0">{{ answers[1] }}</button>
     </div>
     <div class="row">
@@ -36,13 +36,14 @@
         timer: '00:10',
         timerBuffer: null,
         correctAnswer: 'NaN',
+        correctAnswerButton: 'NaN',
         axios: axios,
         sound: null,
         answers: [],
-        isCorrectAnswer: 3,
+        isCorrectAnswer: 'NàN',
         playing: false,
         remainingQuestions: 4,
-        buttonColor: 'Tomato'
+        suggestions: []
       }
     },
     methods: {
@@ -70,10 +71,16 @@
             this.sound = new buzz.sound(require('../assets/' + response.data.filename))
             this.correctAnswer = response.data.songID
             this.answers = []
+            this.suggestions = []
+            this.suggestions.push(response.data.suggestions[0].songID)
+            this.suggestions.push(response.data.suggestions[1].songID)
+            this.suggestions.push(response.data.suggestions[2].songID)
+            this.suggestions.push(response.data.suggestions[3].songID)
+            this.correctAnswerButton = this.suggestions.indexOf(this.correctAnswer)
             this.answers.push(response.data.suggestions[0].trackName)
-            this.answers.push(response.data.suggestions[0].trackName)
-            this.answers.push(response.data.suggestions[0].trackName)
-            this.answers.push(response.data.suggestions[0].trackName)
+            this.answers.push(response.data.suggestions[1].trackName)
+            this.answers.push(response.data.suggestions[2].trackName)
+            this.answers.push(response.data.suggestions[3].trackName)
             this.sound.play()
             this.msg = 'Playing'
             this.sound.bind('timeupdate', () => {
@@ -108,20 +115,26 @@
           })
       },
       displayToggle (buttonId) {
+        var givenAnswer = this.suggestions[buttonId]
         this.sound.stop()
         this.msg = 'Play'
         this.playing = 0
-        this.answers = []
-        if (this.correctAnswer === buttonId) {
+        if (this.correctAnswer === givenAnswer) {
+          this.displayCorrectAnswer(buttonId, this.suggestions.indexOf(this.correctAnswer))
           alert('Yay! You got it! ')
         } else {
-          alert('Noob!')
+          alert('Noob!' + this.answers[this.suggestions.indexOf(this.correctAnswer)])
         }
         if (this.remainingQuestions !== 0) {
           this.remainingQuestions -= 1
           this.startNewExtract()
         } else {
           this.remainingQuestions = 4
+        }
+      },
+      displayCorrectAnswer (givenAnswerButtonId, correstAnswerButtonId) {
+        if (givenAnswerButtonId === correstAnswerButtonId) {
+          this.buttonColor = 'green'
         }
       }
     }
@@ -271,6 +284,10 @@
   .return-button:active{
     transform: translateY(0px);
     box-shadow: 1px 4px 5px #232323;
+  }
+
+  .answered-button{
+    background-color: green;
   }
 
 </style>
