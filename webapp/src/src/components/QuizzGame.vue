@@ -146,6 +146,7 @@
           })
       },
       displayToggle (buttonId) {
+        this.displayAnswer = true
         var givenAnswer = this.suggestions[buttonId]
         if (this.correctAnswer === givenAnswer) {
           this.colors[buttonId] = '#409900'
