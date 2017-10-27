@@ -7,7 +7,7 @@
       <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
     </div>
     <div class="row">
-      <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': buttonColor}" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
       <button class="answer-button" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="playing == 0">{{ answers[1] }}</button>
     </div>
     <div class="row">
@@ -41,7 +41,8 @@
         answers: [],
         isCorrectAnswer: 3,
         playing: false,
-        remainingQuestions: 4
+        remainingQuestions: 4,
+        buttonColor: 'Tomato'
       }
     },
     methods: {
@@ -84,7 +85,7 @@
               else {
                 this.timer = '00:' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
               }
-              console.log(this.timer)
+              // console.log(this.timer)
 
               if (this.timer === '00:00') {
                 this.sound.stop()
