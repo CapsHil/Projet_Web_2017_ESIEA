@@ -15,7 +15,7 @@ function connectDB()
 {
     try
     {
-        $bdd = new PDO(dbName, dbUserName, dbPassword);
+        $bdd = new PDO(dbName, dbUserName, dbPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
     }
     catch (Exception $bdd)
     {
@@ -194,7 +194,6 @@ function extractDataForSongs($songIDs, $bdd = null)
 		array_push($output, array(  "songID" => $data['ID'],
 									"trackName" => $data['trackName'],
 									"artistName" => $data['artistName']));
-
 	}
 
 	$req->closeCursor();
