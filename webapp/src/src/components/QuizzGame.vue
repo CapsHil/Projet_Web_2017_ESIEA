@@ -3,7 +3,7 @@
     <div>for dev purpose: {{ correctAnswerButton }}</div>
     <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
     <div class="row game-header">
-      <button class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1"><!--{{ msg }}--></button>
+      <div class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1"><!--{{ msg }}--></div>
       <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
     </div>
     <div class="row">
