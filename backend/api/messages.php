@@ -41,22 +41,7 @@ function sendMessage($input)
 	if(empty($input['message']))
 		return;
 
-	$userID = (int) $_REQUEST['userID'];
-
-	if(!is_int($userID))
-	{
-		logError('Invalid user ID (' . $input['userID'] . ') provided while trying to send a message: ' . $input['message']);
-		exit('{"status":"error","error":"invalid user ID"}');
-	}
-
-	$userID = $input['userID'];
-	if(!hasUserID($userID))
-	{
-		logError('Unknown user ID (' . $input['userID'] . ') provided while trying to send a message: ' . $input['message']);
-		exit('{"status":"error","error":"unknown user ID"}');
-	}
-
-	insertMessageIntoDB($userID, $input['message']);
+	insertMessageIntoDB($_REQUEST['userName'], $input['message']);
 	exit('{"status":"success"}');
 }
 

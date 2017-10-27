@@ -145,7 +145,7 @@ function getNbSongs($bdd = null)
 	$data = $req->fetch();
 	$req->closeCursor();
 
-	return $data;
+	return $data[0];
 }
 
 function getCloseRelativeSong($songID, $bdd = null, $maxReturn = 0)
@@ -243,102 +243,13 @@ function insertMessageIntoDB($userID, $message)
 	return $output;
 }
 
-//User management
-
-//The password is already hashed using password_hash
-function createUser($name, $email, $password)
-{
-	$hashedPassword = hashPasswordForUser($password);
-	if($hashedPassword === false)
-		return false;
-
-	$req = connectDB()->prepare("INSERT INTO `user`(`name`, `password`, `email`) VALUES (:1, :2, :3)");
-	$output = $req->execute([
-		':1' => $name,
-		':2' => $hashedPassword,
-		':3' => $email
-		]);
-
-	$req->closeCursor();
-
-	return $output;
-}
-
-function validateUserPassword($name, $password)
-{
-	$req = connectDB()->prepare("SELECT `password`, `ID` FROM `user` WHERE `name` = :1");
-
-	if($req->execute([':1' => $name]))
-	{
-		$data = $req->fetch();
-
-		if(password_verify($password, $data['password']))
-			$output = $data['ID'];
-		else
-			$output = false;
-	}
-	else
-		$output = false;
-
-	$req->closeCursor();
-
-	return $output;
-}
-
-function getUserIDFromName($name)
-{
-	$req = connectDB()->prepare('SELECT `ID` FROM `user` WHERE `name` = :1');
-	$output = $req->execute([':1' => $name]);
-
-	if($output !== false)
-	{
-		$data = $req->fetch();
-		$output = $data['ID'];
-	}
-
-	$req->closeCursor();
-
-	return $output;
-}
-
-function hasUserID($userID, $bdd = null)
-{
-	if($bdd == null)
-		$bdd = connectDB();
-
-	$req = $bdd->prepare('SELECT COUNT(`ID`) FROM `user` WHERE `ID` = :1');
-	$req->execute([':1' => $userID]);
-	$count = $req->fetch();
-	$output = $count[0] == 1;
-	$req->closeCursor();
-
-	return $output;
-}
-
-function deleteUser($userID)
-{
-	$bdd = connectDB();
-
-	$req = $bdd->prepare('DELETE FROM `chatbox` WHERE `userID` = :1;
-									DELETE FROM `highScore` WHERE `userID` = :1; 
-									DELETE FROM `user` WHERE `ID` = :1;');
-
-	$req->execute([':1' => $userID]);
-	$req->closeCursor();
-}
-
 //High scores management
 
 function getTopScores($nbTopScores)
 {
 	$bdd = connectDB();
-	$req = $bdd->prepare('SELECT `highScore`.`score` AS score, `user`.`name` as name 
-FROM `highScore` 
-INNER JOIN `user` ON `highScore`.`userID` = `user`.`ID`
-ORDER BY `highScore`.`score`
-LIMIT :1');
-
-	$req->execute([':1' => $nbTopScores]);
+	$req = $bdd->prepare('SELECT `score`, `name` FROM `highScore` ORDER BY `highScore`.`score` LIMIT' . ((int) $nbTopScores));
+	$req->execute();
 
 	$counter = 1;
 	$output = [];
@@ -349,32 +260,21 @@ LIMIT :1');
 	return $output;
 }
 
-function increaseCurrentStrike($userID, $bdd)
+function commitStrike($userName, $strike)
 {
-	if($bdd == null)
-		$bdd = connectDB();
+	$bdd = connectDB();
 
-	$req = $bdd->prepare('UPDATE `user` SET `currentStrike` = `currentStrike` + 1 WHERE `ID` = :1');
-	$req->execute([':1' => $userID]);
-	$req->closeCursor();
-}
-
-function commitStrike($userID, $bdd)
-{
-	if($bdd == null)
-		$bdd = connectDB();
-
-	$req = $bdd->prepare('SELECT `currentStrike` FROM `user` WHERE `ID` = :1');
-	$req->execute([':1' => $userID]);
+	$req = $bdd->prepare('SELECT COUNT(`score`) FROM `highScore` WHERE `userName` = :1');
+	$req->execute([':1' => $userName]);
 	$data = $req->fetch();
-	$currentStrike = $data['currentStrike'];
 	$req->closeCursor();
 
-	$req = $bdd->prepare('UPDATE `user` SET `currentStrike` = 0 WHERE `ID` = :1');
-	$req->execute([':1' => $userID]);
-	$req->closeCursor();
+	if($data[0])
+		$req = $bdd->prepare('INSERT INTO `highScore`(`userName`, `score`) VALUES (:2, :1)');
 
-	$req = $bdd->prepare('UPDATE `highScore` SET `score` = :1 WHERE `userID` = :2');
-	$req->execute([':1' => $currentStrike, ':2' => $userID]);
+	else
+		$req = $bdd->prepare('UPDATE `highScore` SET `score` = :1 WHERE `userName` = :2');
+
+	$req->execute([':1' => $strike, ':2' => $userName]);
 	$req->closeCursor();
 }
