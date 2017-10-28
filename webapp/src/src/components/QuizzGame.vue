@@ -261,7 +261,7 @@
   .timer{
     color: #efefef;
     padding:40px;
-    line-height: 20px;
+    line-height: 50px;
     font-size: 50px;
     display: none;
   }
