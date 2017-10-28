@@ -9,19 +9,19 @@
       </el-col>
     </el-row>
     <div class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()"><!--{{ msg }}--></div>
-      <el-row gutter="50" type="flex" justify="center">
-        <el-col :xs="11" :sm="11" :md="11" :lg="11" :xl="11">
+      <el-row gutter="50">
+        <el-col :xs="24" :sm="24" :md="{span: 11, offset: 1}" :lg="{span: 11, offset: 1}" :xl="{span: 11, offset: 1}">
           <button class="answer-button" v-bind:style="{ 'background-color': colors[0] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="answersEnabled == false">{{ answers[0] }}</button>
         </el-col>
-        <el-col :xs="11" :sm="11" :md="11" :lg="11" :xl="11">
+        <el-col :xs="24" :sm="24" :md="{span: 11, offset: 0}" :lg="{span: 11, offset: 0}" :xl="{span: 11, offset: 0}">
           <button class="answer-button" v-bind:style="{ 'background-color': colors[1] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="answersEnabled == false">{{ answers[1] }}</button>
         </el-col>
       </el-row>
-    <el-row gutter="50" type="flex" justify="center">
-        <el-col :xs="11" :sm="11" :md="11" :lg="11" :xl="11">
+    <el-row gutter="50">
+      <el-col :xs="24" :sm="24" :md="{span: 11, offset: 1}" :lg="{span: 11, offset: 1}" :xl="{span: 11, offset: 1}">
           <button class="answer-button" v-bind:style="{ 'background-color': colors[2] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="answersEnabled == false">{{ answers[2] }}</button>
         </el-col>
-        <el-col :xs="11" :sm="11" :md="11" :lg="11" :xl="11">
+      <el-col :xs="24" :sm="24" :md="{span: 11, offset: 0}" :lg="{span: 11, offset: 0}" :xl="{span: 11, offset: 0}">
           <button class="answer-button" v-bind:style="{ 'background-color': colors[3] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="answersEnabled == false">{{ answers[3] }}</button>
         </el-col>
       </el-row>
