@@ -3,16 +3,16 @@
     <div>for dev purpose: {{ correctAnswerButton }}</div>
     <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
     <div class="row game-header">
-      <div class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()" :disabled="playing == 1"><!--{{ msg }}--></div>
+      <div class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()"><!--{{ msg }}--></div>
       <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
     </div>
     <div class="row">
-      <button class="answer-button" v-bind:style="{ 'background-color': colors[0] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="playing == 0">{{ answers[0] }}</button>
-      <button class="answer-button" v-bind:style="{ 'background-color': colors[1] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="playing == 0">{{ answers[1] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': colors[0] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="answersEnabled == false">{{ answers[0] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': colors[1] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="answersEnabled == false">{{ answers[1] }}</button>
     </div>
     <div class="row">
-      <button class="answer-button" v-bind:style="{ 'background-color': colors[2] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="playing == 0">{{ answers[2] }}</button>
-      <button class="answer-button" v-bind:style="{ 'background-color': colors[3] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="playing == 0">{{ answers[3] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': colors[2] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="answersEnabled == false">{{ answers[2] }}</button>
+      <button class="answer-button" v-bind:style="{ 'background-color': colors[3] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="answersEnabled == false">{{ answers[3] }}</button>
     </div>
     <h1 v-bind:class="{ 'hide': !displayAnswer }">{{displayedAnswer}}</h1>
     <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
@@ -54,7 +54,8 @@
         colors: ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8'],
         displayedAnswer: '',
         displayAnswer: false,
-        timeStamp: null
+        timeStamp: null,
+        answersEnabled: false
       }
     },
     methods: {
@@ -95,7 +96,8 @@
         }})
           .then((response) => {
             console.log(response.data)
-            // eslint-disable-next-line new-cap
+            this.answersEnabled = true
+        // eslint-disable-next-line new-cap
             this.sound = new buzz.sound(require('../assets/' + response.data.filename))
             this.correctAnswer = response.data.songID
             this.answers = []
@@ -133,24 +135,12 @@
               }
               // console.log(this.timer)
               if (this.timer === '00:00') {
+                this.answersEnabled = false
                 this.displayAnswer = true
               }
 
               if (this.timer === '00:0-3' || this.timer === this.timeStamp) {
-                this.displayAnswer = false
-                this.sound.stop()
-                this.playing = 0
-                this.msg = 'Play'
-                this.correctAnswer = 'NaN'
-                this.answers = []
-                this.buttonClicked = false
-                this.colors = ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8']
-                if (this.remainingQuestions !== 0) {
-                  this.remainingQuestions -= 1
-                  this.startNewExtract()
-                } else {
-                  this.remainingQuestions = 4
-                }
+                this.resetQuestion()
               }
             })
           })
@@ -160,6 +150,7 @@
       },
       displayToggle (buttonId) {
         this.displayAnswer = true
+        this.answersEnabled = false
         var givenAnswer = this.suggestions[buttonId]
         if (this.correctAnswer === givenAnswer) {
           this.colors[buttonId] = '#409900'
@@ -168,13 +159,28 @@
           this.colors[this.suggestions.indexOf(this.correctAnswer)] = '#409900'
         }
         this.timeStamp = buzz.toTimer(this.sound.getTime())
-        console.log('you clicked at' + this.timeStamp)
         if (10 - (this.timeStamp[3] + this.timeStamp[4]) !== 10) {
           this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
           // eslint-disable-next-line
         }
         else {
           this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
+        }
+      },
+      resetQuestion () {
+        this.displayAnswer = false
+        this.sound.stop()
+        this.playing = 0
+        this.msg = 'Play'
+        this.correctAnswer = 'NaN'
+        this.answers = []
+        this.buttonClicked = false
+        this.colors = ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8']
+        if (this.remainingQuestions !== 0) {
+          this.remainingQuestions -= 1
+          this.startNewExtract()
+        } else {
+          this.remainingQuestions = 4
         }
       }
     }
@@ -279,6 +285,8 @@
     margin: 20px;
     border: hidden;
     border-radius: 5px;
+    box-shadow: 1px 4px 5px #232323;
+
     transition: transform 0.2s;
     transition: box-shadow 0.2s;
     overflow: hidden;
@@ -286,14 +294,31 @@
     display: none;
   }
 
+  .answer-button:disabled{
+    color: #232323;
+    transform: translateY(0px);
+  }
+
+  .answer-button:disabled:hover{
+    transform: translateY(0px);
+    box-shadow: 1px 4px 5px #232323;
+
+
+  }
+
   .active-button{
     display: inline;
   }
 
   .active-button:hover{
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     box-shadow: 2px 8px 5px #232323;
     visibility: visible;
+  }
+
+  .active-button:active{
+    transform: translateY(0px);
+
   }
 
   .hide{
