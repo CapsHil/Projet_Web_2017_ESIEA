@@ -1,19 +1,30 @@
 <template>
   <div class="quizz-game">
     <div>for dev purpose: {{ correctAnswerButton }}</div>
-    <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
-    <div class="row game-header">
-      <div class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()"><!--{{ msg }}--></div>
-      <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
-    </div>
-    <div class="row">
-      <button class="answer-button" v-bind:style="{ 'background-color': colors[0] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="answersEnabled == false">{{ answers[0] }}</button>
-      <button class="answer-button" v-bind:style="{ 'background-color': colors[1] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="answersEnabled == false">{{ answers[1] }}</button>
-    </div>
-    <div class="row">
-      <button class="answer-button" v-bind:style="{ 'background-color': colors[2] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="answersEnabled == false">{{ answers[2] }}</button>
-      <button class="answer-button" v-bind:style="{ 'background-color': colors[3] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="answersEnabled == false">{{ answers[3] }}</button>
-    </div>
+
+    <el-row gutter="10" type="flex" justify="center" class="game-header">
+      <el-col :xs="24" :xl="24">
+        <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
+        <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
+      </el-col>
+    </el-row>
+    <div class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()"><!--{{ msg }}--></div>
+      <el-row gutter="10" type="flex" justify="center">
+        <el-col :xs="6" :xl="6">
+          <button class="answer-button" v-bind:style="{ 'background-color': colors[0] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(0)" :disabled="answersEnabled == false">{{ answers[0] }}</button>
+        </el-col>
+        <el-col :xs="6" :xl="6">
+          <button class="answer-button" v-bind:style="{ 'background-color': colors[1] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(1)" :disabled="answersEnabled == false">{{ answers[1] }}</button>
+        </el-col>
+      </el-row>
+    <el-row gutter="10" type="flex" justify="center">
+        <el-col :xs="6" :xl="6">
+          <button class="answer-button" v-bind:style="{ 'background-color': colors[2] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(2)" :disabled="answersEnabled == false">{{ answers[2] }}</button>
+        </el-col>
+        <el-col :xs="6" :xl="6">
+          <button class="answer-button" v-bind:style="{ 'background-color': colors[3] }" v-bind:class="{ 'active-button': playing, 'hide': !displayPropositions }" v-on:click="displayToggle(3)" :disabled="answersEnabled == false">{{ answers[3] }}</button>
+        </el-col>
+      </el-row>
     <h1 v-bind:class="{ 'hide': !displayAnswer }">{{displayedAnswer}}</h1>
     <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
   </div>
@@ -69,6 +80,7 @@
         this.remainingQuestions = 4
         this.$emit('return')
         this.skipEnabled = false
+        this.displayAnswer = false
       },
       skipTrack () {
         this.sound.stop()
@@ -193,6 +205,7 @@
   }
 
   .game-header{
+    height: 100px;
     /*padding: 0 40% 0 40%;*/
     /*display: flex;*/
     /*flex-direction: row;*/
@@ -277,11 +290,11 @@
   }
 
   .answer-button {
+    width: 100%;
     display: inline;
     padding: 0px;
-    width: 300px;
     background-color: #5eaeb8;
-    height: 200px;
+    min-height: 200px;
     margin: 20px;
     border: hidden;
     border-radius: 5px;

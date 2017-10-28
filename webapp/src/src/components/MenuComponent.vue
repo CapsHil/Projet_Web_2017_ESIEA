@@ -5,10 +5,10 @@
       <div class="options-list">
         <div class="options-element">
           <span>{{hintLabel}}</span>
-          <div class="button options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
+          <div class="menu-button options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
         </div>
       </div>
-      <div v-on:click="startGame()" class="button" :disabled="playing == 1">{{ start }}</div>
+      <div v-on:click="startGame()" class="menu-button" :disabled="playing == 1">{{ start }}</div>
     </div>
     <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-on:return="endGame()"></quizz-game>
   </div>
@@ -78,7 +78,7 @@
     margin: auto;
     }
 
-  .button{
+  .menu-button{
     padding: 5px;
     width: 100px;
     height: 40px;
@@ -94,14 +94,14 @@
     color: #efefef;
   }
 
-  .button:hover{
+  .menu-button:hover{
     box-shadow: 2px 8px 5px #232323;
     transform: translateY(-4px);
     background-color: #90ff00;
     color: #555555;
   }
 
-  .button:active{
+  .menu-button:active{
     transform: translateY(0px);
     box-shadow: 1px 4px 5px #232323;
   }
