@@ -2,9 +2,11 @@
   <div class="quizz-game">
     <div>for dev purpose: {{ correctAnswerButton }}</div>
 
-    <el-row gutter="10" type="flex" justify="center" class="game-header">
-      <el-col :xs="24" :xl="24">
+    <el-row gutter="10" class="game-header">
+      <el-col :xs="24" :sm="24" :md="1" :lg="1":xl="1">
         <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="23" :lg="23":xl="23">
         <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
       </el-col>
     </el-row>
@@ -127,17 +129,7 @@
             this.sound.play()
             this.msg = 'Playing'
             this.sound.bind('timeupdate', () => {
-              var tmp = buzz.toTimer(this.sound.getTime())
-              if (!this.buttonClicked) {
-                this.timerBuffer = buzz.toTimer(this.sound.getTime())
-                this.tmp2 = 10 - (this.timerBuffer[3] + this.timerBuffer[4])
-              } else {
-                if (this.tmp2 !== 10) {
-                  this.timerBuffer = '00:' + (parseInt(tmp[4]) + this.tmp2)
-                }
-              }
-              console.log('tmp2: ' + this.tmp2)
-              console.log('timeBuffer: ' + this.timerBuffer)
+              this.timerBuffer = buzz.toTimer(this.sound.getTime())
               if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) !== 10) {
                 this.timer = '00:0' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
                 // eslint-disable-next-line
@@ -205,7 +197,7 @@
   }
 
   .game-header{
-    height: 100px;
+    min-height: 100px;
     /*padding: 0 40% 0 40%;*/
     /*display: flex;*/
     /*flex-direction: row;*/
@@ -271,9 +263,6 @@
     padding:40px;
     line-height: 20px;
     font-size: 50px;
-    position: absolute;
-    top: 0%;
-    right: 0%;
     display: none;
   }
 
@@ -345,11 +334,10 @@
     line-height: 60px;
     background-color: #de603b;
     color: #efefef;
-    position: absolute;
-    left: 20px;
     transition: all 0.2s;
     cursor: pointer;
     box-shadow: 1px 4px 5px #232323;
+    margin-bottom: 40px;
   }
 
   .return-button:hover {
