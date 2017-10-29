@@ -47,7 +47,7 @@
     transition: {
       speed: '0.2s',
       opacity: '0.6s',
-      termination: 0
+      termination: 300
     },
     autoRevert: true,
     location: 'top',
@@ -148,8 +148,12 @@
             this.sound.bind('timeupdate', () => {
               this.timerBuffer = buzz.toTimer(this.sound.getTime())
               if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) !== 10) {
-                this.$Progress.set((10 - (this.timerBuffer[3] + this.timerBuffer[4])) * 10)
                 this.timer = '00:0' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
+                if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) >= 0) {
+                  this.$Progress.set((10 - (this.timerBuffer[3] + this.timerBuffer[4])) * 10)
+                } else {
+                  this.$Progress.set(Math.abs(100 - (this.timerBuffer[3] + this.timerBuffer[4] * 33)))
+                }
                 // eslint-disable-next-line
               }
               else {
