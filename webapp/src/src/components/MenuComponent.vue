@@ -38,7 +38,7 @@
       </div>
       <div v-on:click="startGame()" class="menu-button menu-start-button" :disabled="playing == 1">{{ start }}</div>
     </div>
-    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-bind:genres="checkedGenres" v-bind:arrowButtonTop="arrowButtonTop" v-bind:numberOfQuestions="numberOfQuestions" v-on:return="endGame()"></quizz-game>
+    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:ranked="isRankedEnabled" v-bind:displayPropositions="displayHints" v-bind:genres="checkedGenres" v-bind:arrowButtonTop="arrowButtonTop" v-bind:numberOfQuestions="numberOfQuestions" v-on:return="endGame()"></quizz-game>
   </div>
 </template>
 
@@ -86,7 +86,7 @@
         } else {
           this.isRankedEnabledText = 'Enabled'
           this.isRankedEnabled = true
-          this.numberOfQuestions = 10
+          this.numberOfQuestions = 1
         }
       },
 

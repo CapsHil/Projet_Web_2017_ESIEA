@@ -1,6 +1,6 @@
 <template>
   <div class="quizz-game">
-    <!-- <div>for dev purpose: {{ correctAnswerButton }}</div> -->
+     <div>for dev purpose: {{ playerScore }}</div>
     <el-row gutter="10" class="game-header">
       <el-col :xs="24" :sm="24" :md="1" :lg="1":xl="1">
         <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
@@ -28,6 +28,15 @@
       </el-row>
     <h1 v-bind:class="{ 'hide': !displayAnswer }">{{displayedAnswer}}</h1>
     <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="menu-button menu-start-button">{{ skip }}</div>
+
+    <div class="score-modal-shade" v-bind:class="{ 'hide-modal': !displaySubmitScore }">
+      <div class="score-modal">
+        <div class="score-modal-dismiss fa fa-close" v-on:click="dismissModal()"></div>
+        <h1>Your Score: </h1><div>{{playerScore}}</div>
+        <h1>Enter your username to submit score: </h1><input v-model="playerName" placeholder="loser"><br>
+        <div class="menu-button menu-start-button" v-on:click="submitScore()">Submit</div>
+      </div>
+    </div>
     <vue-progress-bar></vue-progress-bar>
   </div>
 
@@ -66,10 +75,13 @@
         default: false
       },
       numberOfQuestions: {
-
       },
       genres: {
         default: 2
+      },
+      ranked: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -96,7 +108,10 @@
         timeStamp: null,
         answersEnabled: false,
         flag: false,
-        wasFirstQuestion: true
+        wasFirstQuestion: true,
+        playerScore: 0,
+        playerName: '',
+        displaySubmitScore: false
       }
     },
     methods: {
@@ -223,9 +238,13 @@
         var givenAnswer = this.suggestions[buttonId]
         if (this.correctAnswer === givenAnswer) {
           this.colors[buttonId] = '#409900'
+          if (this.ranked) {
+            this.playerScore += ((10 - this.sound.getTime()) * 100)
+          }
         } else {
           this.colors[buttonId] = '#de603b'
           this.colors[this.suggestions.indexOf(this.correctAnswer)] = '#409900'
+          this.playerScore -= 500
         }
         this.timeStamp = buzz.toTimer(this.sound.getTime())
         this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
@@ -246,6 +265,9 @@
           this.startNewExtract()
         } else {
           this.wasFirstQuestion = true
+          if (this.ranked) {
+            this.displaySubmitScore = true
+          }
         }
       },
       setTimerPosition () {
@@ -254,6 +276,28 @@
         } else {
           this.$Progress.setLocation('right')
         }
+      },
+      dismissModal () {
+        this.displaySubmitScore = false
+        console.log('coucou !')
+      },
+      submitScore () {
+        axios.post('http://localhost:8082/api/topScores.php', {headers:
+        {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+          'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+        },
+          username: this.playerName,
+          strike: this.playerScore
+        })
+          .then((response) => {
+            console.log(response.data.scores)
+            this.dismissModal()
+          })
+      .catch(function (error) {
+        console.log(error)
+      })
       }
     }
   }
@@ -427,6 +471,52 @@
 
   .green{
     background-color: green;
+  }
+
+  .score-modal-shade{
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: 10;
+    width:100%;
+    height:100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  .score-modal{
+    color: #232323;
+    border-radius: 10px;
+    background-color: #efefef;
+    width: 50%;
+    height:50%;
+    margin:auto;
+    margin-top: 12%;
+    padding: 5px;
+    box-shadow: 1px 4px 50px 1px black;
+  }
+
+  .score-modal-dismiss{
+    padding: 5px;
+    margin: 5px;
+    float: right;
+    border-radius: 5px;
+    background-color: #232323;
+    color: #efefef;
+    cursor: pointer;
+  }
+
+  .score-modal-dismiss:hover{
+    transform: translateY(-4px);
+    background-color: #555555
+
+  }
+
+  .hide-modal{
+    display: none;
+  }
+
+  input{
+    margin-bottom: 20px;
   }
 
 </style>
