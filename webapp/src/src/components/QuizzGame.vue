@@ -522,6 +522,7 @@
     width: 300px;
     border-radius: 5px;
     background-color: #ecf5ff;
+    box-shadow: 1px 4px 5px #232323
   }
 
   .hide-modal{
