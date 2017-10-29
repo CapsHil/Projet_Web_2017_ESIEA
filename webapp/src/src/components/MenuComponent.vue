@@ -188,15 +188,19 @@
     cursor: pointer;
     display: inline-block;
     transition: all 0.2s;
-    background-color: #8e8e8e;
-    color: #efefef;
+    /*background-color: #8e8e8e;
+    color: #efefef;*/
+    color: #409EFF;
+    background-color: #ecf5ff;
   }
 
   .menu-button:hover{
     box-shadow: 2px 8px 5px #232323;
     transform: translateY(-4px);
-    background-color: #90ff00;
-    color: #555555;
+    /*background-color: #76d100;
+    color: #555555;*/
+    background-color: #409EFF;
+    color: #ecf5ff;
   }
 
   .menu-button:active{
@@ -214,7 +218,7 @@
   }
 
   .options-button:hover{
-    background-color: #90ff00;
+    background-color: #76d100;
     color: #555555;
   }
 
