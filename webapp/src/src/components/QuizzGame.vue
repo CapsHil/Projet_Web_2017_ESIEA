@@ -158,22 +158,27 @@
             this.suggestions.push(response.data.suggestions[2].songID)
             this.suggestions.push(response.data.suggestions[3].songID)
             this.correctAnswerButton = this.suggestions.indexOf(this.correctAnswer)
-            this.answers.push(response.data.suggestions[0].trackName)
+            var tmp
+            tmp = response.data.suggestions[0].trackName
             if (response.data.suggestions[0].trackName !== response.data.suggestions[0].artistName) {
-              this.answers.push(response.data.suggestions[0].artistName)
+              tmp += '\n' + response.data.suggestions[0].artistName
             }
-            this.answers.push(response.data.suggestions[1].trackName)
+            this.answers.push(tmp)
+            tmp = response.data.suggestions[1].trackName
             if (response.data.suggestions[1].trackName !== response.data.suggestions[1].artistName) {
-              this.answers.push(response.data.suggestions[1].artistName)
+              tmp += '\n' + response.data.suggestions[1].artistName
             }
-            this.answers.push(response.data.suggestions[2].trackName)
+            this.answers.push(tmp)
+            tmp = response.data.suggestions[2].trackName
             if (response.data.suggestions[2].trackName !== response.data.suggestions[2].artistName) {
-              this.answers.push(response.data.suggestions[2].artistName)
+              tmp += '\n' + response.data.suggestions[2].artistName
             }
-            this.answers.push(response.data.suggestions[3].trackName)
+            this.answers.push(tmp)
+            tmp = response.data.suggestions[3].trackName
             if (response.data.suggestions[3].trackName !== response.data.suggestions[3].artistName) {
-              this.answers.push(response.data.suggestions[3].artistName)
+              tmp += '\n' + response.data.suggestions[3].artistName
             }
+            this.answers.push(tmp)
             this.displayedAnswer = this.answers[this.suggestions.indexOf(this.correctAnswer)]
             this.sound.play()
             this.msg = 'Playing'
@@ -358,6 +363,7 @@
     overflow: hidden;
     font-size: 25px;
     display: none;
+    white-space: pre-line;
   }
 
   .answer-button:disabled{
