@@ -67,6 +67,8 @@
   }
 
   .future-cop {
+    width: 20%;
+    margin: auto;
     /*position: relative;*/
   }
 

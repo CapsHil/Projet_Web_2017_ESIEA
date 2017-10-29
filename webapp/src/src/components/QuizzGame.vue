@@ -1,6 +1,8 @@
 <template>
   <div class="quizz-game">
-     <div>for dev purpose: {{ playerScore }}</div>
+     <div class="score" v-bind:class="{ 'hide': !ranked }">
+       <h1>Score: {{ playerScore }} </h1>
+     </div>
     <el-row gutter="10" class="game-header">
       <el-col :xs="24" :sm="24" :md="1" :lg="1":xl="1">
         <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
@@ -120,6 +122,7 @@
         if (this.sound !== null) {
           this.sound.stop()
         }
+        this.colors = ['#5eaeb8', '#5eaeb8', '#5eaeb8', '#5eaeb8']
         this.msg = 'Play'
         this.playing = 0
         this.answers = []
@@ -239,7 +242,7 @@
         if (this.correctAnswer === givenAnswer) {
           this.colors[buttonId] = '#409900'
           if (this.ranked) {
-            this.playerScore += ((10 - this.sound.getTime()) * 100)
+            this.playerScore += (Math.trunc((10 - this.sound.getTime()) * 100))
           }
         } else {
           this.colors[buttonId] = '#de603b'
@@ -509,6 +512,15 @@
     transform: translateY(-4px);
     background-color: #555555
 
+  }
+
+  .score{
+    float: right;
+    padding: 10px;
+    margin-right: 20px;
+    width: 300px;
+    border-radius: 5px;
+    background-color: #ecf5ff;
   }
 
   .hide-modal{
