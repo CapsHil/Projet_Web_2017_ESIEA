@@ -98,7 +98,7 @@ ALTER TABLE `genre`
 --
 ALTER TABLE `music`
   ADD UNIQUE KEY `ID` (`ID`),
-  ADD UNIQUE KEY `searchSimilar` (`ID`,`genreID`),
+  ADD UNIQUE KEY `searchSimilar` (`ID`,`genreID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -310,10 +310,10 @@ INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VAL
 INSERT INTO `genre` (`genreID`, `name`) VALUES ('1', 'Série/Film');
 INSERT INTO `genre` (`genreID`, `name`) VALUES ('2', 'Musique');
 
-INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_4.mp3', 'Fame', 'Irene Cara'),
-INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_170.mp3', 'Writing\'s on the Wall', 'Sam Smith'),
-INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_181.mp3', 'Paper Planes', 'MIA'),
-INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_183.mp3', 'I\'m a Believer', 'Smash Mouth'),
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_4.mp3', 'Fame', 'Irene Cara');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_170.mp3', 'Writing\'s on the Wall', 'Sam Smith');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_181.mp3', 'Paper Planes', 'MIA');
+INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_183.mp3', 'I\'m a Believer', 'Smash Mouth');
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_186.mp3', 'Hero', 'Hans Zimmer');
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
