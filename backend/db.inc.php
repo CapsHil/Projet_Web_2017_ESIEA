@@ -148,9 +148,9 @@ function getRandomSongs($bdd = null, $nbSongs = 1, $genreArray = [])
 			FROM `music` AS r1 JOIN
 			   (SELECT (RAND() *
 					(SELECT MAX(ID)
-						FROM `music` WHERE `genreID` in VALUES(' . $genreString . '))) AS ID)
+						FROM `music` WHERE `genreID` IN(' . $genreString . '))) AS ID)
 					AS r2
-			WHERE r1.ID >= r2.ID AND r1.`genreID` in VALUES(' . $genreString . ')
+			WHERE r1.ID >= r2.ID AND r1.`genreID` IN(' . $genreString . ')
 			ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
 	}
 	else

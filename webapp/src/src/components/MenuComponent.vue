@@ -15,15 +15,25 @@
           <span>{{numberOfQuestionsLabel}}</span>
           <el-slider class="slider" :min="1" :max="20" v-model="numberOfQuestions"></el-slider>
         </div>
+        <div class="options-element">
+          <div>
+            <div id='example-3'>
+              <el-checkbox v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
+              <br>
+              <span>Checked names: {{ checkedGenres }}</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div v-on:click="startGame()" class="menu-button menu-start-button" :disabled="playing == 1">{{ start }}</div>
     </div>
-    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-bind:arrowButtonTop="arrowButtonTop" v-bind:numberOfQuestions="numberOfQuestions" v-on:return="endGame()"></quizz-game>
+    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-bind:genres="checkedGenres" v-bind:arrowButtonTop="arrowButtonTop" v-bind:numberOfQuestions="numberOfQuestions" v-on:return="endGame()"></quizz-game>
   </div>
 </template>
 
 <script>
   import QuizzGame from './QuizzGame.vue'
+  import axios from 'axios'
 
   export default {
     name: 'menu-component',
@@ -38,12 +48,14 @@
         progressbarLabel: 'Timer position: ',
         arrowButtonTop: true,
         numberOfQuestionsLabel: 'Number of questions: ',
-        numberOfQuestions: 5
-
+        numberOfQuestions: 5,
+        checkedGenres: [],
+        genres: []
       }
     },
     methods: {
       toggleHints () {
+        console.log(this.checkedGenres)
         if (this.hintStatus === 'Enabled') {
           this.hintStatus = 'Disabled'
           this.displayHints = false
@@ -67,6 +79,20 @@
     },
     components: {
       QuizzGame
+    },
+    mounted: function () {
+      axios.get('http://localhost:8082/api/genre.php', {headers:
+      {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+        'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+      }})
+        .then((response) => {
+          this.genres = response.data.genres
+        })
+      .catch(function (error) {
+        console.log(error)
+      })
     }
   }
 </script>

@@ -67,6 +67,10 @@
         default: false
       },
       numberOfQuestions: {
+
+      },
+      genres: {
+        default: 2
       }
     },
     data () {
@@ -138,7 +142,9 @@
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
           'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
-        }})
+        },
+          genre: this.genres
+        })
           .then((response) => {
             console.log(response.data)
             this.answersEnabled = true
@@ -153,9 +159,21 @@
             this.suggestions.push(response.data.suggestions[3].songID)
             this.correctAnswerButton = this.suggestions.indexOf(this.correctAnswer)
             this.answers.push(response.data.suggestions[0].trackName)
+            if (response.data.suggestions[0].trackName !== response.data.suggestions[0].artistName) {
+              this.answers.push(response.data.suggestions[0].artistName)
+            }
             this.answers.push(response.data.suggestions[1].trackName)
+            if (response.data.suggestions[1].trackName !== response.data.suggestions[1].artistName) {
+              this.answers.push(response.data.suggestions[1].artistName)
+            }
             this.answers.push(response.data.suggestions[2].trackName)
+            if (response.data.suggestions[2].trackName !== response.data.suggestions[2].artistName) {
+              this.answers.push(response.data.suggestions[2].artistName)
+            }
             this.answers.push(response.data.suggestions[3].trackName)
+            if (response.data.suggestions[3].trackName !== response.data.suggestions[3].artistName) {
+              this.answers.push(response.data.suggestions[3].artistName)
+            }
             this.displayedAnswer = this.answers[this.suggestions.indexOf(this.correctAnswer)]
             this.sound.play()
             this.msg = 'Playing'
