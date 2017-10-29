@@ -24,7 +24,7 @@
 	$requestedGenre = [];
 	if(isset($input['genre']) && is_array($input['genre']))
 	{
-		foreach ($input['genre'] => $currentGenre)
+		foreach ($input['genre'] as $currentGenre)
 		{
 			if(validateGenre((int) $currentGenre))
 			{
