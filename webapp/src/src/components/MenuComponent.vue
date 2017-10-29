@@ -17,7 +17,7 @@
         </div>
         <div class="options-element">
           <span>Genres (default Série/Film): </span>
-          <el-checkbox class="menu-button" v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
+          <el-checkbox :border="true" class=" checkbox" v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
         </div>
       </div>
       <div v-on:click="startGame()" class="menu-button menu-start-button" :disabled="playing == 1">{{ start }}</div>
@@ -174,6 +174,13 @@
 
   .slider{
     line-height: normal;
+    padding: 5px;
+  }
+
+  .checkbox{
+    background-color: #efefef;
+    float: right;
+    line-height: 40px;
   }
 
 </style>
