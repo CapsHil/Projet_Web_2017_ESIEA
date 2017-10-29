@@ -1,7 +1,6 @@
 <template>
   <div class="quizz-game">
     <div>for dev purpose: {{ correctAnswerButton }}</div>
-
     <el-row gutter="10" class="game-header">
       <el-col :xs="24" :sm="24" :md="1" :lg="1":xl="1">
         <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
@@ -29,6 +28,7 @@
       </el-row>
     <h1 v-bind:class="{ 'hide': !displayAnswer }">{{displayedAnswer}}</h1>
     <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
+    <vue-progress-bar></vue-progress-bar>
   </div>
 
 </template>
@@ -36,7 +36,24 @@
 <script>
   import buzz from 'buzz'
   import axios from 'axios'
+  import VueProgressBar from 'vue-progressbar'
+  import Vue from 'vue'
   // import blockly from 'node-blockly'
+
+  const options = {
+    color: '#bffaf3',
+    failedColor: '#874b4b',
+    thickness: '20px',
+    transition: {
+      speed: '0.2s',
+      opacity: '0.6s',
+      termination: 0
+    },
+    autoRevert: true,
+    location: 'top',
+    inverse: true
+  }
+  Vue.use(VueProgressBar, options)
 
   export default {
     name: 'quizz-game',
@@ -131,11 +148,13 @@
             this.sound.bind('timeupdate', () => {
               this.timerBuffer = buzz.toTimer(this.sound.getTime())
               if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) !== 10) {
+                this.$Progress.set((10 - (this.timerBuffer[3] + this.timerBuffer[4])) * 10)
                 this.timer = '00:0' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
                 // eslint-disable-next-line
               }
               else {
                 this.timer = '00:' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
+                this.$Progress.set(100)
               }
               // console.log(this.timer)
               if (this.timer === '00:00') {
