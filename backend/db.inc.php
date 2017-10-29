@@ -268,14 +268,14 @@ function insertMessageIntoDB($userName, $message)
 function getTopScores($nbTopScores)
 {
 	$bdd = connectDB();
-	$req = $bdd->prepare('SELECT `score`, `name` FROM `highScore` ORDER BY `highScore`.`score` LIMIT' . ((int) $nbTopScores));
+	$req = $bdd->prepare('SELECT `score`, `userName` FROM `highScore` ORDER BY `score` LIMIT' . ((int) $nbTopScores));
 	$req->execute();
 
 	$counter = 1;
 	$output = [];
 
 	while ($score = $req->fetch())
-		array_push($output, ['rank' => $counter++, 'user' => $score['name'], 'score' => $score['score']]);
+		array_push($output, ['rank' => $counter++, 'user' => $score['userName'], 'score' => $score['score']]);
 
 	return $output;
 }

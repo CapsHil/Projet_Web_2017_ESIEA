@@ -15,10 +15,12 @@ switch ($method)
 {
 	case 'GET':
 	{
-		if(is_int($input['nbResults']))
+		if(is_numeric($input['nbResults']))
 			$nbResults = $input['nbResults'];
 		else
 			$nbResults = $defaultNbTopScores;
+
+		echo $nbResults;
 
 		echo json_encode([
 			'status' => 'success',
