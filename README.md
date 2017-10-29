@@ -20,7 +20,7 @@
 
 ### How to run all services
 
-Assume that you have Docker and docker-compose version 1.16.1 or later installed, and enought disk space to pull images
+Assume that you have Docker (https://docs.docker.com/engine/installation/) and docker-compose version 1.16.1 or later installed (https://docs.docker.com/compose/install/), and enought disk space to pull images
 - `docker-compose up`
 
 ### Run fake backend
