@@ -12,13 +12,12 @@
           <div class="menu-button" v-bind:class="{ 'fa fa-arrow-circle-right fa-2x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-2x': arrowButtonTop }" v-on:click="switchTimerPosition()"></div>
         </div>
         <div class="options-element">
-          <div>
-            <div id='example-3'>
-              <el-checkbox v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
-              <br>
-              <span>Checked names: {{ checkedGenres }}</span>
-            </div>
-          </div>
+          <span>Genres (default Série/Film): </span>
+          <!-- <div> -->
+            <el-checkbox class="menu-button" v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
+            <!-- <br>
+            <span>Checked names: {{ checkedGenres }}</span> -->
+          <!-- </div> -->
         </div>
       </div>
       <div v-on:click="startGame()" class="menu-button menu-start-button" :disabled="playing == 1">{{ start }}</div>
@@ -49,7 +48,6 @@
     },
     methods: {
       toggleHints () {
-        console.log(this.checkedGenres)
         if (this.hintStatus === 'Enabled') {
           this.hintStatus = 'Disabled'
           this.displayHints = false
