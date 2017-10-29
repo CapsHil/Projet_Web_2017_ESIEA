@@ -13,20 +13,20 @@ returnHeader();
 
 function connectDB()
 {
-    try
-    {
-        $bdd = new PDO(dbName, dbUserName, dbPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-    }
-    catch (Exception $bdd)
-    {
-        logError('Error : ' . $bdd->getMessage());
-        die('{"status":"error","error":"Could not connect to database"}');
-    }
+	try
+	{
+		$bdd = new PDO(dbName, dbUserName, dbPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+	}
+	catch (Exception $bdd)
+	{
+		logError('Error : ' . $bdd->getMessage());
+		die('{"status":"error","error":"Could not connect to database"}');
+	}
 
-    if($bdd == null)
-	    die('{"status":"error","error":"Could not connect to database"}');
+	if($bdd == null)
+		die('{"status":"error","error":"Could not connect to database"}');
 
-    return $bdd;
+	return $bdd;
 }
 
 /*
@@ -37,38 +37,58 @@ function connectDB()
 
 function registerGenre($genreName = "")
 {
-    if(empty($genreName))
-        return 0;
+	if(empty($genreName))
+		return 0;
 
-    $bdd = connectDB();
-    $req = $bdd->prepare('INSERT INTO `genre`(`name`) VALUES(:1)');
-    $out = $req->execute(array(':1' => strtolower($genreName)));
+	$bdd = connectDB();
+	$req = $bdd->prepare('INSERT INTO `genre`(`name`) VALUES(:1)');
+	$out = $req->execute(array(':1' => strtolower($genreName)));
 
-    $req->closeCursor();
-
-    if($out)
-    	return $bdd->lastInsertId();
-
-    $req = $bdd->prepare('SELECT `genreID` FROM `genre` WHERE `name` = :1');
-    $req->execute(array(':1' => strtolower($genreName)));
-    $data = $req->fetch();
 	$req->closeCursor();
 
-    return $data['genreID'];
+	if($out)
+		return $bdd->lastInsertId();
+
+	$req = $bdd->prepare('SELECT `genreID` FROM `genre` WHERE `name` = :1');
+	$req->execute(array(':1' => strtolower($genreName)));
+	$data = $req->fetch();
+	$req->closeCursor();
+
+	return $data['genreID'];
 }
 
-function hasGenre($genreID = 0)
+function hasGenre($genreID = 0, $bdd = null)
 {
-    if(!is_numeric($genreID) || $genreID == 0)
-        return false;
+	if(!is_numeric($genreID) || $genreID == 0)
+		return false;
 
-    $bdd = connectDB();
-    $req = $bdd->prepare('SELECT COUNT(*) FROM `genre` WHERE `genreID` = :1');
-    $req->execute(array(':1' => $genreID));
+	if($bdd == null)
+		$bdd = connectDB();
+	
+	$req = $bdd->prepare('SELECT COUNT(*) FROM `genre` WHERE `genreID` = :1');
+	$req->execute(array(':1' => $genreID));
 	$data = $req->fetch();
-    $req->closeCursor();
+	$req->closeCursor();
 
-    return $data[0] != 0;
+	return $data[0] != 0;
+}
+
+function validateGenre($genreID = 0)
+{
+	if(!is_numeric($genreID) || $genreID == 0)
+		return false;
+
+	$bdd = connectDB();
+
+	if(!hasGenre($genreID, $bdd))
+		return false;	
+
+	$req = $bdd->prepare('SELECT COUNT(*) FROM `music` WHERE `genreID` = :1');
+	$req->execute(array(':1' => $genreID));
+	$data = $req->fetch();
+	$req->closeCursor();
+
+	return $data[0] != 0;
 }
 
 function getGenreForID($songID, $bdd = null)
@@ -88,18 +108,18 @@ function getGenreForID($songID, $bdd = null)
 
 function registerSong($filename = "", $artistName = "", $trackName = "", $genreID = 0)
 {
-    if(empty($filename) || empty($artistName) || empty($trackName) || empty($genreID))
-        return false;
+	if(empty($filename) || empty($artistName) || empty($trackName) || empty($genreID))
+		return false;
 
 	$req = connectDB()->prepare('INSERT INTO `music` (`genreID`, `filename`, `trackName`, `artistName`) 
 														VALUES(:1, :2, :3, :4)');
 	$out = $req->execute(array(':1' => $genreID, ':2' => $filename, ':3' => $trackName, ':4' => $artistName));
 	$req->closeCursor();
 
-    return $out == true;
+	return $out == true;
 }
 
-function getRandomSongs($bdd = null, $nbSongs = 1)
+function getRandomSongs($bdd = null, $nbSongs = 1, $genre = 0)
 {
 	if(!is_integer($nbSongs) || $nbSongs < 1)
 		return false;
@@ -117,15 +137,15 @@ function getRandomSongs($bdd = null, $nbSongs = 1)
 	$req = $bdd->prepare('SELECT r1.`ID`
 		FROM `music` AS r1 JOIN
 		   (SELECT (RAND() *
-		                 (SELECT MAX(ID)
-		                    FROM `music`)) AS ID)
-		    AS r2
-		WHERE r1.ID >= r2.ID
+						 (SELECT MAX(ID)
+							FROM `music` WHERE `genreID` = :1)) AS ID)
+			AS r2
+		WHERE r1.ID >= r2.ID AND r1.`genreID` = :1
 		ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
 
 	$output = [];
 
-	if($req->execute())
+	if($req->execute(array(':1' => $genre)))
 	{
 		while($entry = $req->fetch())
 			array_push($output, $entry['ID']);

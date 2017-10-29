@@ -20,6 +20,11 @@
 	else
 		$nbSuggestions = $defaultNbSuggestions;
 
+	if(isset($input['genre']) && is_numeric($input['genre']) && validateGenre((int) $input['genre']))
+		$requestedGenre = (int) $input['genre'];
+	else
+		$requestedGenre = 0;
+
 	//The list could contains deleted items...
 	$hasExclusion = false;
 	if(isset($input['excludeRecentlyTried']))
@@ -33,7 +38,7 @@
 		$exclusion = [];
 
 	//Get the ID of the song that will have to be guessed
-	$questions = getRandomSongs($bdd);
+	$questions = getRandomSongs($bdd, 1, $requestedGenre);
 	if(empty($questions))
 		exit('{"status":"error","error":"could not generate a song"}');
 
