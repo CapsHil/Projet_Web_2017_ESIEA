@@ -27,7 +27,7 @@
         </el-col>
       </el-row>
     <h1 v-bind:class="{ 'hide': !displayAnswer }">{{displayedAnswer}}</h1>
-    <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
+    <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="menu-button menu-start-button">{{ skip }}</div>
     <vue-progress-bar></vue-progress-bar>
   </div>
 
@@ -65,6 +65,8 @@
       arrowButtonTop: {
         type: Boolean,
         default: false
+      },
+      numberOfQuestions: {
       }
     },
     data () {
@@ -81,7 +83,7 @@
         isCorrectAnswer: 'NàN',
         playing: false,
         suggestions: [],
-        remainingQuestions: 4,
+        remainingQuestions: 'NàN',
         skip: 'Skip this track',
         skipEnabled: false,
         buttonColor: '',
@@ -90,7 +92,8 @@
         displayAnswer: false,
         timeStamp: null,
         answersEnabled: false,
-        flag: false
+        flag: false,
+        wasFirstQuestion: true
       }
     },
     methods: {
@@ -101,7 +104,6 @@
         this.msg = 'Play'
         this.playing = 0
         this.answers = []
-        this.remainingQuestions = 4
         this.$emit('return')
         this.skipEnabled = false
         this.displayAnswer = false
@@ -112,13 +114,18 @@
           this.remainingQuestions -= 1
           this.startNewExtract()
         } else {
-          this.remainingQuestions = 4
+          this.remainingQuestions = this.numberOfQuestions - 1
           this.playing = 0
           this.skipEnabled = false
         }
       },
       startNewExtract () {
         this.setTimerPosition()
+        if (this.wasFirstQuestion) {
+          this.wasFirstQuestion = false
+          this.remainingQuestions = this.numberOfQuestions - 1
+        }
+        console.log(this.remainingQuestions)
         this.timeStamp = null
         this.$Progress.setColor('#bffaf3')
         this.buttonColor = ''
@@ -217,7 +224,7 @@
           this.remainingQuestions -= 1
           this.startNewExtract()
         } else {
-          this.remainingQuestions = 4
+          this.wasFirstQuestion = true
         }
       },
       setTimerPosition () {

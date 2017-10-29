@@ -11,10 +11,14 @@
           <span>{{progressbarLabel}}</span>
           <div class="menu-button" v-bind:class="{ 'fa fa-arrow-circle-right fa-2x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-2x': arrowButtonTop }" v-on:click="switchTimerPosition()"></div>
         </div>
+        <div class="options-element">
+          <span>{{numberOfQuestionsLabel}}</span>
+          <el-slider class="slider" :min="1" :max="20" v-model="numberOfQuestions"></el-slider>
+        </div>
       </div>
       <div v-on:click="startGame()" class="menu-button menu-start-button" :disabled="playing == 1">{{ start }}</div>
     </div>
-    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-bind:arrowButtonTop="arrowButtonTop" v-on:return="endGame()"></quizz-game>
+    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-bind:arrowButtonTop="arrowButtonTop" v-bind:numberOfQuestions="numberOfQuestions" v-on:return="endGame()"></quizz-game>
   </div>
 </template>
 
@@ -32,7 +36,9 @@
         hintStatus: 'Enabled',
         displayHints: true,
         progressbarLabel: 'Timer position: ',
-        arrowButtonTop: true
+        arrowButtonTop: true,
+        numberOfQuestionsLabel: 'Number of questions: ',
+        numberOfQuestions: 5
 
       }
     },
@@ -144,6 +150,10 @@
   .disabled:hover{
     background-color: #F05020;
     color: #efefef
+  }
+
+  .slider{
+    line-height: normal;
   }
 
 </style>
