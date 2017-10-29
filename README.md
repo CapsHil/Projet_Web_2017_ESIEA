@@ -16,7 +16,7 @@
   
   *Enjoy !*
   
-  Note : Due to the fact that the project is not deployed in production, you only have few extracts in `Serie/Film` and `Musique`, but you can easily add many extracts by addind them to the database.
+  Note : Due to the fact that the project is not deployed in production, you only have few extracts in `Serie/Film` and `Musique`, but you can easily add many extracts and categories by addind them to the database.
 
 ### How to run all services
 
