@@ -86,7 +86,7 @@
         } else {
           this.isRankedEnabledText = 'Enabled'
           this.isRankedEnabled = true
-          this.numberOfQuestions = 5
+          this.numberOfQuestions = 10
         }
       },
 

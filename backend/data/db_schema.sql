@@ -315,6 +315,12 @@ INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VAL
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_181.mp3', 'Paper Planes', 'MIA');
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_183.mp3', 'I\'m a Believer', 'Smash Mouth');
 INSERT INTO `music` (`ID`, `genreID`, `filename`, `trackName`, `artistName`) VALUES (NULL, 2, 'extract_186.mp3', 'Hero', 'Hans Zimmer');
+
+INSERT INTO `highScore` (`userName`, `score`) VALUES ('CapsHil', '10000');
+INSERT INTO `highScore` (`userName`, `score`) VALUES ('Gillesse', '8250');
+INSERT INTO `highScore` (`userName`, `score`) VALUES ('Taiki', '7000');
+INSERT INTO `highScore` (`userName`, `score`) VALUES ('Bougaincity', '4300');
+INSERT INTO `highScore` (`userName`, `score`) VALUES ('Falempin', '50');
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
