@@ -1,7 +1,6 @@
 <template>
   <div class="menu-component">
     <div v-bind:class="{ 'show': !playing, 'hide': playing }">
-      <h1>{{menu}}</h1>
       <div class="options-list">
         <div class="options-element">
           <span>{{hintLabel}}</span>

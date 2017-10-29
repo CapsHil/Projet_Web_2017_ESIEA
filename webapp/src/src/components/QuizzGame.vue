@@ -38,7 +38,6 @@
   import axios from 'axios'
   import VueProgressBar from 'vue-progressbar'
   import Vue from 'vue'
-  // import blockly from 'node-blockly'
 
   const options = {
     color: '#bffaf3',
