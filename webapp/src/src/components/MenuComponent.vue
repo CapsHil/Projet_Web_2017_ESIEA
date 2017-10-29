@@ -211,4 +211,8 @@
     float: right;
   }
 
+  .el-checkbox.is-bordered + .el-checkbox.is-bordered{
+    margin-left: 0;
+  }
+
 </style>

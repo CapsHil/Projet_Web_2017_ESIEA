@@ -67,17 +67,17 @@
   }
 
   .future-cop {
-    position: relative;
-    margin-top: 300px;
+    /*position: relative;*/
   }
 
   .future {
-    position: absolute;
+    /*position: absolute;*/
+    position: relative;
     left: 0;
-    top: -310px;
+    top: -50px;
     font-family: 'Mr Dafoe', cursive;
-    font-size: 200px;
-    margin-top: 160px;
+    font-size: 80px;
+    margin-top: 10px;
     margin-bottom: 0;
     color: #EB219B;
     -webkit-text-fill-color: rgba(253, 90, 250, 1);
@@ -86,19 +86,19 @@
     -webkit-transform: skew(-5deg,-5deg);
     font-weight: normal;
     z-index: 2;
-    margin-left: 60px;
-    padding-left: 50px;
+    padding-left: 0px;
     padding-right: 70px;
   }
 
   .cop {
+    z-index: -1;
     position: relative;
     font-family: 'Monoton', cursive;
-    font-size: 200px;
+    font-size: 80px;
     line-height: 1;
     margin: 0;
     margin-top: -95px;
-    padding-left: 80px;
+    padding-left: 0;
     /* font-weight: normal; */
     background-image: -webkit-linear-gradient(#022486 0%, #0AD0FD 30%, #BDFCFC 40%, #D8FFFF 44%, #00081C 44%, #00081C 50%, #074A67 52%, #1CD8FE 60%, #7FEDFE 62%, #96F5FC 70%, #0FD8FA 73%, #0BD2FD 88%, #AFFDFF 100%);
     -webkit-background-clip: text;
@@ -110,7 +110,7 @@
     font-weight: 400;
   }
 
-  .cop:before {
+  /*.cop:before {
     position: absolute;
     content: '';
     left: 51px;
@@ -140,7 +140,7 @@
     -webkit-animation-delay: 2s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-iteration-count: infinite;
-  }
+  }*/
 
   @-webkit-keyframes chrome_effect {
     0% {background-position:-680px 0;}
@@ -241,4 +241,6 @@
       top: 32px;
       opacity: 0;}
   }
+
+
 </style>
