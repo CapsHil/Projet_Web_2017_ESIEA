@@ -1,6 +1,8 @@
 # ESIEA WEB PROJECT 2017
 ## AIL5MAJ - INF5041
 
+This project was made by FALEMPIN Charlotte, GILLES Vincent, MARIAUX Corentin, RABY Pierre and SPIR Émile-Hugo
+
 ### Blind-test rules
 
   You have 3 game modes :
