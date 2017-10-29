@@ -115,6 +115,7 @@
       },
       startNewExtract () {
         this.timeStamp = null
+        this.$Progress.setColor('#bffaf3')
         this.buttonColor = ''
         if (this.displayPropositions === false) {
           this.skipEnabled = true
@@ -154,10 +155,11 @@
                   if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) >= 0) {
                     this.$Progress.set((10 - (this.timerBuffer[3] + this.timerBuffer[4])) * 10)
                   } else {
+                    this.$Progress.setColor('#375372')
                     this.$Progress.set(Math.abs(100 - (this.timerBuffer[3] + this.timerBuffer[4] * 33)))
                   }
                 } else {
-                  console.log(Math.abs(this.timer[4] - this.timeStamp[4] - 3))
+                  this.$Progress.setColor('#375372')
                   this.$Progress.set(Math.abs(this.timer[4] - this.timeStamp[4] - 3) * 33)
                 }
                 // eslint-disable-next-line
@@ -195,7 +197,6 @@
         this.timeStamp = buzz.toTimer(this.sound.getTime())
         this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
         this.flag = true
-        console.log(this.flag)
         this.$Progress.set(0)
       },
       resetQuestion () {
