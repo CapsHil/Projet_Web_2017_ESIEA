@@ -28,7 +28,6 @@
       </el-row>
     <h1 v-bind:class="{ 'hide': !displayAnswer }">{{displayedAnswer}}</h1>
     <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
-    <button v-bind:class="{ 'fa fa-arrow-circle-right fa-5x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-5x': arrowButtonTop }" v-on:click="switchTimerPosition()"></button>
     <vue-progress-bar></vue-progress-bar>
   </div>
 
@@ -62,6 +61,10 @@
       displayPropositions: {
         type: Boolean,
         default: true
+      },
+      arrowButtonTop: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -87,8 +90,7 @@
         displayAnswer: false,
         timeStamp: null,
         answersEnabled: false,
-        flag: false,
-        arrowButtonTop: false
+        flag: false
       }
     },
     methods: {
@@ -116,6 +118,7 @@
         }
       },
       startNewExtract () {
+        this.setTimerPosition()
         this.timeStamp = null
         this.$Progress.setColor('#bffaf3')
         this.buttonColor = ''
@@ -217,13 +220,11 @@
           this.remainingQuestions = 4
         }
       },
-      switchTimerPosition () {
-        if (!this.arrowButtonTop) {
-          this.$Progress.setLocation('right')
-          this.arrowButtonTop = true
-        } else {
+      setTimerPosition () {
+        if (this.arrowButtonTop) {
           this.$Progress.setLocation('top')
-          this.arrowButtonTop = false
+        } else {
+          this.$Progress.setLocation('right')
         }
       }
     }

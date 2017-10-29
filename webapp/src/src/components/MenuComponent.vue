@@ -7,10 +7,14 @@
           <span>{{hintLabel}}</span>
           <div class="menu-button options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
         </div>
+        <div class="options-element">
+          <span>{{hintLabel}}</span>
+          <button v-bind:class="{ 'fa fa-arrow-circle-right fa-5x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-5x': arrowButtonTop }" v-on:click="switchTimerPosition()"></button>
+        </div>
       </div>
       <div v-on:click="startGame()" class="menu-button" :disabled="playing == 1">{{ start }}</div>
     </div>
-    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-on:return="endGame()"></quizz-game>
+    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-bind:arrowButtonTop="arrowButtonTop" v-on:return="endGame()"></quizz-game>
   </div>
 </template>
 
@@ -26,7 +30,9 @@
         start: 'Start Playing',
         hintLabel: 'Display 4 answer propositions: ',
         hintStatus: 'Enabled',
-        displayHints: true
+        displayHints: true,
+        arrowButtonTop: true
+
       }
     },
     methods: {
@@ -38,6 +44,10 @@
           this.hintStatus = 'Enabled'
           this.displayHints = true
         }
+      },
+
+      switchTimerPosition () {
+        this.arrowButtonTop = !this.arrowButtonTop
       },
 
       startGame () {
