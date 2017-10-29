@@ -7,7 +7,10 @@ import App from './App'
 import router from './router'
 
 Vue.use(ElementUI)
-Vue.config.productionTip = false
+Vue.config.devtools = false
+Vue.config.silent = true
+
+// Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
