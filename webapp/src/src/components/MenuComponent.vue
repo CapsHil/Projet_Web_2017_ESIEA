@@ -15,7 +15,7 @@
             </el-table>
           </el-popover>
 
-          <el-button v-popover:popover4>See top scores</el-button>
+          <el-button class="menu-button score-button" v-popover:popover4>See top scores</el-button>
         </div>
         <div class="options-element">
           <span>{{progressbarLabel}}</span>
@@ -226,6 +226,22 @@
   .button-disabled:hover{
     background-color: #F05020;
     color: #efefef
+  }
+
+  .score-button{
+    height: inherit;
+    border: none;
+    width: 100%;
+    float: none;
+    margin: auto;
+    font-size: 20px;
+    color: #409EFF;
+    background-color: #ecf5ff;
+  }
+
+  .score-button:hover{
+    background-color: #409EFF;
+    color: #ecf5ff;
   }
 
   .slider{
