@@ -3,6 +3,8 @@
 
 This project was made by FALEMPIN Charlotte, GILLES Vincent, MARIAUX Corentin, RABY Pierre and SPIR Émile-Hugo
 
+This web application based on Vuejs 2.4, is a musical quizz game.
+
 ### Blind-test rules
 
   You have 3 game modes :
@@ -15,6 +17,8 @@ This project was made by FALEMPIN Charlotte, GILLES Vincent, MARIAUX Corentin, R
   
   You will have 10 seconds unless you click on button, and then 3 seconds to see the answer.
   If you play without propositions, you can skip the extract when you found it.
+  
+  Dont't forget to turn on the speaker ;-)
   
   *Enjoy !*
   
