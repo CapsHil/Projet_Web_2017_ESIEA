@@ -20,7 +20,9 @@
         </div>
         <div class="options-element">
           <span>Genres (default Série/Film): </span>
-          <el-checkbox :border="true" class=" checkbox" v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
+          <div class="flex-container">
+            <el-checkbox :border="true" class=" checkbox" v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
+          </div>
         </div>
       </div>
       <div v-on:click="startGame()" class="menu-button menu-start-button" :disabled="playing == 1">{{ start }}</div>
@@ -135,6 +137,7 @@
     margin-bottom: 20px;
     padding: 10px;
     text-align: left;
+    overflow: hidden;
     }
 
   .menu-button{
@@ -196,8 +199,16 @@
 
   .checkbox{
     background-color: #efefef;
-    float: right;
     line-height: 40px;
+    width: 100px;
+    margin-left: 0px;
+    margin-bottom: 5px;
+  }
+
+  .flex-container{
+    display: flex;
+    flex-direction: column;
+    float: right;
   }
 
 </style>
