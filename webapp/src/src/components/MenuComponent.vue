@@ -12,7 +12,7 @@
           <div class="menu-button" v-bind:class="{ 'fa fa-arrow-circle-right fa-2x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-2x': arrowButtonTop }" v-on:click="switchTimerPosition()"></div>
         </div>
       </div>
-      <div v-on:click="startGame()" class="menu-button" :disabled="playing == 1">{{ start }}</div>
+      <div v-on:click="startGame()" class="menu-button menu-start-button" :disabled="playing == 1">{{ start }}</div>
     </div>
     <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-bind:arrowButtonTop="arrowButtonTop" v-on:return="endGame()"></quizz-game>
   </div>
@@ -82,17 +82,20 @@
     width: 50%;
   }
   .options-element{
+    min-height: 60px;
+    line-height: 60px;
     font-size: 20px;
     background-color: #efefef;
     border-radius: 5px;
     width: 50%;
     margin: auto;
     margin-bottom: 20px;
-    padding: 5px;
+    padding: 10px;
     text-align: left;
     }
 
   .menu-button{
+    float: right;
     padding: 5px;
     width: 100px;
     height: 40px;
@@ -100,7 +103,6 @@
     line-height: 40px;
     border-radius: 5px;
     box-shadow: 1px 4px 5px #232323;
-    margin: 20px;
     cursor: pointer;
     display: inline-block;
     transition: all 0.2s;
@@ -118,6 +120,10 @@
   .menu-button:active{
     transform: translateY(0px);
     box-shadow: 1px 4px 5px #232323;
+  }
+
+  .menu-start-button{
+    float: none;
   }
 
   .options-button{
