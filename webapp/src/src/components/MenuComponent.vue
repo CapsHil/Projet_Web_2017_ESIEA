@@ -1,16 +1,19 @@
 <template>
   <div class="menu-component">
-    <div v-bind:class="{ 'show': !playing, 'hide': playing }">
-      <h1>{{menu}}</h1>
-      <div class="options-list">
-        <div class="options-element">
-          <span>{{hintLabel}}</span>
-          <div class="menu-button options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
+    <div class="foreground">
+      <div v-bind:class="{ 'show': !playing, 'hide': playing }">
+        <h1>{{menu}}</h1>
+        <div class="options-list">
+          <div class="options-element">
+            <span>{{hintLabel}}</span>
+            <div class="menu-button options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
+          </div>
         </div>
+        <div v-on:click="startGame()" class="menu-button" :disabled="playing == 1">{{ start }}</div>
       </div>
-      <div v-on:click="startGame()" class="menu-button" :disabled="playing == 1">{{ start }}</div>
+      <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-on:return="endGame()"></quizz-game>
     </div>
-    <quizz-game v-bind:class="{ 'show': playing, 'hide': !playing }" v-bind:displayPropositions="displayHints" v-on:return="endGame()"></quizz-game>
+    <canvas id="canvas" class="background" style="background:-moz-element(#backgroundElt);">Canvas is not supported in your browser.</canvas>
   </div>
 </template>
 
@@ -124,6 +127,18 @@
   .disabled:hover{
     background-color: #F05020;
     color: #efefef
+  }
+
+  .background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -100;
+  }
+
+  .foreground{
+    position: relative;
+    z-index: 100;
   }
 
 </style>
