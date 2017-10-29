@@ -99,7 +99,6 @@ ALTER TABLE `genre`
 ALTER TABLE `music`
   ADD UNIQUE KEY `ID` (`ID`),
   ADD UNIQUE KEY `searchSimilar` (`ID`,`genreID`),
-  ADD UNIQUE KEY `filename` (`filename`(64));
 
 --
 -- AUTO_INCREMENT for dumped tables
