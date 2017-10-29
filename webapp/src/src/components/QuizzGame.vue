@@ -129,7 +129,6 @@
           this.wasFirstQuestion = false
           this.remainingQuestions = this.numberOfQuestions - 1
         }
-        console.log(this.remainingQuestions)
         this.timeStamp = null
         this.$Progress.setColor('#bffaf3')
         this.buttonColor = ''
@@ -137,7 +136,7 @@
           this.skipEnabled = true
         }
         this.playing = 1
-        this.axios.get('http://localhost:8082/api/test.php', {headers:
+        this.axios.post('http://localhost:8082/api/test.php', {headers:
         {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
@@ -198,7 +197,6 @@
                 this.timer = '00:' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
                 this.$Progress.set(100)
               }
-              // console.log(this.timer)
               if (this.timer === '00:00') {
                 this.answersEnabled = false
                 this.displayAnswer = true
