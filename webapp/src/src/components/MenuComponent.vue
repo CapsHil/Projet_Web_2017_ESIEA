@@ -5,15 +5,19 @@
       <div class="options-list">
         <div class="options-element">
           <span>{{hintLabel}}</span>
-          <div class="menu-button options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
+          <div class="menu-button options-button" v-bind:class="{ 'button-disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
         </div>
         <div class="options-element">
           <span>{{progressbarLabel}}</span>
           <div class="menu-button" v-bind:class="{ 'fa fa-arrow-circle-right fa-2x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-2x': arrowButtonTop }" v-on:click="switchTimerPosition()"></div>
         </div>
         <div class="options-element">
+          <span>{{rankedLabel}}</span>
+          <div class="menu-button options-button" v-bind:class="{ 'button-disabled': !isRankedEnabled }" v-on:click="toggleRanked()">{{isRankedEnabledText}}</div>
+        </div>
+        <div class="options-element">
           <span>{{numberOfQuestionsLabel}}</span>
-          <el-slider class="slider" :min="1" :max="20" v-model="numberOfQuestions"></el-slider>
+          <el-slider class="slider" :min="1" :max="20" v-model="numberOfQuestions" :disabled="isRankedEnabled"></el-slider>
         </div>
         <div class="options-element">
           <span>Genres (default Série/Film): </span>
@@ -45,7 +49,10 @@
         numberOfQuestionsLabel: 'Number of questions: ',
         numberOfQuestions: 5,
         checkedGenres: [],
-        genres: []
+        genres: [],
+        rankedLabel: 'Ranked mode: ',
+        isRankedEnabled: false,
+        isRankedEnabledText: 'Disabled'
       }
     },
     methods: {
@@ -56,6 +63,17 @@
         } else {
           this.hintStatus = 'Enabled'
           this.displayHints = true
+        }
+      },
+
+      toggleRanked () {
+        if (this.isRankedEnabledText === 'Enabled') {
+          this.isRankedEnabledText = 'Disabled'
+          this.isRankedEnabled = false
+        } else {
+          this.isRankedEnabledText = 'Enabled'
+          this.isRankedEnabled = true
+          this.numberOfQuestions = 5
         }
       },
 
@@ -162,12 +180,12 @@
     color: #555555;
   }
 
-  .disabled{
+  .button-disabled{
     background-color: #992020;
     color: #efefef;
   }
 
-  .disabled:hover{
+  .button-disabled:hover{
     background-color: #F05020;
     color: #efefef
   }
