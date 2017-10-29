@@ -16,13 +16,8 @@
           <el-slider class="slider" :min="1" :max="20" v-model="numberOfQuestions"></el-slider>
         </div>
         <div class="options-element">
-          <div>
-            <div id='example-3'>
-              <el-checkbox v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
-              <br>
-              <span>Checked names: {{ checkedGenres }}</span>
-            </div>
-          </div>
+          <span>Genres (default Série/Film): </span>
+          <el-checkbox class="menu-button" v-for="genre in genres" :label="genre.ID" v-model="checkedGenres" :key="genre.ID">{{ genre.name }}</el-checkbox>
         </div>
       </div>
       <div v-on:click="startGame()" class="menu-button menu-start-button" :disabled="playing == 1">{{ start }}</div>
@@ -55,7 +50,6 @@
     },
     methods: {
       toggleHints () {
-        console.log(this.checkedGenres)
         if (this.hintStatus === 'Enabled') {
           this.hintStatus = 'Disabled'
           this.displayHints = false
