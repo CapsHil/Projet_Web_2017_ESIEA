@@ -85,7 +85,8 @@
         displayedAnswer: '',
         displayAnswer: false,
         timeStamp: null,
-        answersEnabled: false
+        answersEnabled: false,
+        flag: false
       }
     },
     methods: {
@@ -149,10 +150,15 @@
               this.timerBuffer = buzz.toTimer(this.sound.getTime())
               if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) !== 10) {
                 this.timer = '00:0' + (10 - (this.timerBuffer[3] + this.timerBuffer[4]))
-                if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) >= 0) {
-                  this.$Progress.set((10 - (this.timerBuffer[3] + this.timerBuffer[4])) * 10)
+                if (!this.flag) {
+                  if (10 - (this.timerBuffer[3] + this.timerBuffer[4]) >= 0) {
+                    this.$Progress.set((10 - (this.timerBuffer[3] + this.timerBuffer[4])) * 10)
+                  } else {
+                    this.$Progress.set(Math.abs(100 - (this.timerBuffer[3] + this.timerBuffer[4] * 33)))
+                  }
                 } else {
-                  this.$Progress.set(Math.abs(100 - (this.timerBuffer[3] + this.timerBuffer[4] * 33)))
+                  console.log(Math.abs(this.timer[4] - this.timeStamp[4] - 3))
+                  this.$Progress.set(Math.abs(this.timer[4] - this.timeStamp[4] - 3) * 33)
                 }
                 // eslint-disable-next-line
               }
@@ -167,6 +173,7 @@
               }
 
               if (this.timer === '00:0-3' || this.timer === this.timeStamp) {
+                this.flag = false
                 this.resetQuestion()
               }
             })
@@ -186,13 +193,10 @@
           this.colors[this.suggestions.indexOf(this.correctAnswer)] = '#409900'
         }
         this.timeStamp = buzz.toTimer(this.sound.getTime())
-        if (10 - (this.timeStamp[3] + this.timeStamp[4]) !== 10) {
-          this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
-          // eslint-disable-next-line
-        }
-        else {
-          this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
-        }
+        this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
+        this.flag = true
+        console.log(this.flag)
+        this.$Progress.set(0)
       },
       resetQuestion () {
         this.displayAnswer = false
