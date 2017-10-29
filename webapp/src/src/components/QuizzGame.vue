@@ -297,6 +297,7 @@
         })
           .then((response) => {
             this.dismissModal()
+            this.playerScore = 0
           })
       .catch(function (error) {
         console.log(error)
