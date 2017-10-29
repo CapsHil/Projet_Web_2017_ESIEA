@@ -1,13 +1,13 @@
 <template>
   <div class="quizz-game">
-    <div>for dev purpose: {{ correctAnswerButton }}</div>
+    <!-- <div>for dev purpose: {{ correctAnswerButton }}</div> -->
     <el-row gutter="10" class="game-header">
       <el-col :xs="24" :sm="24" :md="1" :lg="1":xl="1">
         <i v-on:click="returnToMenu()" class="return-button fa fa-arrow-left"></i>
       </el-col>
-      <el-col :xs="24" :sm="24" :md="23" :lg="23":xl="23">
+      <!-- <el-col :xs="24" :sm="24" :md="23" :lg="23":xl="23">
         <div class="timer" v-bind:class="{ 'show-timer': playing }">Time remaining: {{ timer }}</div>
-      </el-col>
+      </el-col> -->
     </el-row>
     <div class="play-button fa fa-play fa-5x" v-bind:class="{ 'playing': playing, 'not-playing': !playing }" v-on:click="startNewExtract()"><!--{{ msg }}--></div>
       <el-row gutter="50">
@@ -28,6 +28,7 @@
       </el-row>
     <h1 v-bind:class="{ 'hide': !displayAnswer }">{{displayedAnswer}}</h1>
     <div v-on:click="skipTrack()" v-bind:class="{ 'hide': !skipEnabled }" class="button">{{ skip }}</div>
+    <button v-bind:class="{ 'fa fa-arrow-circle-right fa-5x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-5x': arrowButtonTop }" v-on:click="switchTimerPosition()"></button>
     <vue-progress-bar></vue-progress-bar>
   </div>
 
@@ -51,7 +52,7 @@
     },
     autoRevert: true,
     location: 'top',
-    inverse: true
+    inverse: false
   }
   Vue.use(VueProgressBar, options)
 
@@ -86,7 +87,8 @@
         displayAnswer: false,
         timeStamp: null,
         answersEnabled: false,
-        flag: false
+        flag: false,
+        arrowButtonTop: false
       }
     },
     methods: {
@@ -213,6 +215,15 @@
           this.startNewExtract()
         } else {
           this.remainingQuestions = 4
+        }
+      },
+      switchTimerPosition () {
+        if (!this.arrowButtonTop) {
+          this.$Progress.setLocation('right')
+          this.arrowButtonTop = true
+        } else {
+          this.$Progress.setLocation('top')
+          this.arrowButtonTop = false
         }
       }
     }
