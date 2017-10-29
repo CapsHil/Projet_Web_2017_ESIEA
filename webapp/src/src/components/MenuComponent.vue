@@ -99,6 +99,18 @@
       },
 
       endGame () {
+        axios.get('http://localhost:8082/api/topScores.php', {headers:
+        {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+          'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+        }})
+          .then((response) => {
+            this.rankingData = response.data.scores.slice(0, 10)
+          })
+        .catch(function (error) {
+          console.log(error)
+        })
         this.playing = false
       }
     },
@@ -125,7 +137,6 @@
         'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
       }})
         .then((response) => {
-          console.log(response.data.scores)
           this.rankingData = response.data.scores.slice(0, 10)
         })
       .catch(function (error) {
