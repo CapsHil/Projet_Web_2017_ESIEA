@@ -59,7 +59,7 @@
         progressbarLabel: 'Timer position: ',
         arrowButtonTop: true,
         numberOfQuestionsLabel: 'Number of questions: ',
-        numberOfQuestions: 5,
+        numberOfQuestions: 10,
         checkedGenres: [],
         genres: [],
         rankedLabel: 'Ranked mode: ',
@@ -86,7 +86,7 @@
         } else {
           this.isRankedEnabledText = 'Enabled'
           this.isRankedEnabled = true
-          this.numberOfQuestions = 1
+          this.numberOfQuestions = 10
         }
       },
 

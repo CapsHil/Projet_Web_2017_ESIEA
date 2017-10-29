@@ -75,6 +75,7 @@
         default: false
       },
       numberOfQuestions: {
+        default: 10
       },
       genres: {
         default: 2
@@ -160,7 +161,6 @@
           genre: this.genres
         })
           .then((response) => {
-            console.log(response.data)
             this.answersEnabled = true
         // eslint-disable-next-line new-cap
             this.sound = new buzz.sound(require('../assets/' + response.data.filename))
@@ -244,7 +244,9 @@
         } else {
           this.colors[buttonId] = '#de603b'
           this.colors[this.suggestions.indexOf(this.correctAnswer)] = '#409900'
-          this.playerScore -= 500
+          if (this.ranked) {
+            this.playerScore -= 500
+          }
         }
         this.timeStamp = buzz.toTimer(this.sound.getTime())
         this.timeStamp = '00:0' + ((10 - (this.timeStamp[3] + this.timeStamp[4])) - 3)
@@ -279,7 +281,6 @@
       },
       dismissModal () {
         this.displaySubmitScore = false
-        console.log('coucou !')
       },
       submitScore () {
         axios.post('http://localhost:8082/api/topScores.php', {headers:
@@ -292,7 +293,6 @@
           strike: this.playerScore
         })
           .then((response) => {
-            console.log(response.data.scores)
             this.dismissModal()
           })
       .catch(function (error) {
