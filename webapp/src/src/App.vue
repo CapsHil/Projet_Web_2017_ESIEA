@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <canvas id="canvas">Canvas is not supported in your browser.</canvas>
 
 <!--
     <img src="./assets/logo.png">
