@@ -25,10 +25,12 @@ This project was made by FALEMPIN Charlotte, GILLES Vincent, MARIAUX Corentin, R
 Assume that you have Docker (https://docs.docker.com/engine/installation/) and docker-compose version 1.16.1 or later installed (https://docs.docker.com/compose/install/), and enought disk space to pull images
 - `docker-compose up`
 
-### Run fake backend
-- In `fake-backend`
-- `npm install`
-- `npm start`
+When all's up, you can access to :
+- localhost:8080 -> Web app
+- localhost:8081 -> PhpMyAdmin interface (user:password)
+- localhost:8082/api -> Php API
+
+Note: don't forget to change credentials when you put it in production !
 
 ## Backend architecture
 
