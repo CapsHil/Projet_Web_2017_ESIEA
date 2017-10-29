@@ -127,13 +127,6 @@ function getRandomSongs($bdd = null, $nbSongs = 1, $genreArray = [])
 	if($bdd == null)
 		$bdd = connectDB();
 
-	//We're trying to get a random ID from the database
-	//SORT RAND() LIMIT 1 would work but may become a bottleneck later on
-	//http://jan.kneschke.de/projects/mysql/order-by-rand/ describes the alternative method used there
-	//For the sake of complexity, we don't try to get a clean distribution, meaning that deleted song will
-	//      increase the odds that the one after it get selected. If too big of a problem, those IDs aren't
-	//      used elsewhere and can be recomputed whenever necessary, as long as the application is down.
-
 	if(is_array($genreArray) && !empty($genreArray))
 	{
 		$genreString = '';
@@ -144,25 +137,14 @@ function getRandomSongs($bdd = null, $nbSongs = 1, $genreArray = [])
 
 		$genreString = substr($genreString, 2);	//Remove the first ', '
 
-		$req = $bdd->prepare('SELECT r1.`ID`
-			FROM `music` AS r1 JOIN
-			   (SELECT (RAND() *
-					(SELECT MAX(ID)
-						FROM `music` WHERE `genreID` IN(' . $genreString . '))) AS ID)
-					AS r2
-			WHERE r1.ID >= r2.ID AND r1.`genreID` IN(' . $genreString . ')
-			ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
+		$req = $bdd->prepare('SELECT `ID` FROM `music`
+			WHERE `genreID` IN(' . $genreString . ')
+			ORDER BY RAND() LIMIT ' . $nbSongs . ';');
 	}
 	else
 	{
-		$req = $bdd->prepare('SELECT r1.`ID`
-			FROM `music` AS r1 JOIN
-			   (SELECT (RAND() *
-					(SELECT MAX(ID)
-						FROM `music`)) AS ID)
-				AS r2
-			WHERE r1.ID >= r2.ID
-			ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
+		$req = $bdd->prepare('SELECT `ID` FROM `music` 
+			ORDER BY RAND() LIMIT ' . $nbSongs . ';');
 	}
 
 	$output = [];
