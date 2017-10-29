@@ -7,6 +7,17 @@
           <div class="menu-button options-button" v-bind:class="{ 'button-disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
         </div>
         <div class="options-element">
+          <el-popover ref="popover4" placement="right" width="400" trigger="click">
+            <el-table :data="rankingData">
+              <el-table-column width="150" property="rank" label="Rank"></el-table-column>
+              <el-table-column width="100" property="user" label="Username"></el-table-column>
+              <el-table-column width="300" property="score" label="Score"></el-table-column>
+            </el-table>
+          </el-popover>
+
+          <el-button v-popover:popover4>See top scores</el-button>
+        </div>
+        <div class="options-element">
           <span>{{progressbarLabel}}</span>
           <div class="menu-button" v-bind:class="{ 'fa fa-arrow-circle-right fa-2x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-2x': arrowButtonTop }" v-on:click="switchTimerPosition()"></div>
         </div>
@@ -53,7 +64,8 @@
         genres: [],
         rankedLabel: 'Ranked mode: ',
         isRankedEnabled: false,
-        isRankedEnabledText: 'Disabled'
+        isRankedEnabledText: 'Disabled',
+        rankingData: []
       }
     },
     methods: {
@@ -102,6 +114,19 @@
       }})
         .then((response) => {
           this.genres = response.data.genres
+        })
+      .catch(function (error) {
+        console.log(error)
+      })
+      axios.get('http://localhost:8082/api/topScores.php', {headers:
+      {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+        'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+      }})
+        .then((response) => {
+          console.log(response.data.scores)
+          this.rankingData = response.data.scores.slice(0, 10)
         })
       .catch(function (error) {
         console.log(error)
