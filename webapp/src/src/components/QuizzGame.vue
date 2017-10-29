@@ -111,6 +111,7 @@
         this.$emit('return')
         this.skipEnabled = false
         this.displayAnswer = false
+        this.wasFirstQuestion = true
       },
       skipTrack () {
         this.sound.stop()
