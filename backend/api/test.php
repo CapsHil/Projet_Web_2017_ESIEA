@@ -20,10 +20,18 @@
 	else
 		$nbSuggestions = $defaultNbSuggestions;
 
-	if(isset($input['genre']) && is_numeric($input['genre']) && validateGenre((int) $input['genre']))
-		$requestedGenre = (int) $input['genre'];
-	else
-		$requestedGenre = 0;
+	//Validate the genre passed
+	$requestedGenre = [];
+	if(isset($input['genre']) && is_array($input['genre']))
+	{
+		foreach ($input['genre'] => $currentGenre)
+		{
+			if(validateGenre((int) $currentGenre))
+			{
+				array_push($requestedGenre, (int) $currentGenre);
+			}
+		}
+	}
 
 	//The list could contains deleted items...
 	$hasExclusion = false;

@@ -119,7 +119,7 @@ function registerSong($filename = "", $artistName = "", $trackName = "", $genreI
 	return $out == true;
 }
 
-function getRandomSongs($bdd = null, $nbSongs = 1, $genre = 0)
+function getRandomSongs($bdd = null, $nbSongs = 1, $genreArray = [])
 {
 	if(!is_integer($nbSongs) || $nbSongs < 1)
 		return false;
@@ -134,15 +134,23 @@ function getRandomSongs($bdd = null, $nbSongs = 1, $genre = 0)
 	//      increase the odds that the one after it get selected. If too big of a problem, those IDs aren't
 	//      used elsewhere and can be recomputed whenever necessary, as long as the application is down.
 
-	if($genre != 0)
+	if(is_array($genreArray) && !empty($genreArray))
 	{
+		$genreString = '';
+		foreach ($genreArray as $genre)
+		{
+			$genreString .= ", '" . $genre . "'";
+		}
+
+		$genreString = substr($genreString, 2);	//Remove the first ', '
+
 		$req = $bdd->prepare('SELECT r1.`ID`
 			FROM `music` AS r1 JOIN
 			   (SELECT (RAND() *
-							 (SELECT MAX(ID)
-								FROM `music` WHERE `genreID` = :1)) AS ID)
-				AS r2
-			WHERE r1.ID >= r2.ID AND r1.`genreID` = :1
+					(SELECT MAX(ID)
+						FROM `music` WHERE `genreID` in VALUES(' . $genreString . '))) AS ID)
+					AS r2
+			WHERE r1.ID >= r2.ID AND r1.`genreID` in VALUES(' . $genreString . ')
 			ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
 	}
 	else
@@ -150,8 +158,8 @@ function getRandomSongs($bdd = null, $nbSongs = 1, $genre = 0)
 		$req = $bdd->prepare('SELECT r1.`ID`
 			FROM `music` AS r1 JOIN
 			   (SELECT (RAND() *
-							 (SELECT MAX(ID)
-								FROM `music`)) AS ID)
+					(SELECT MAX(ID)
+						FROM `music`)) AS ID)
 				AS r2
 			WHERE r1.ID >= r2.ID
 			ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
@@ -159,7 +167,7 @@ function getRandomSongs($bdd = null, $nbSongs = 1, $genre = 0)
 
 	$output = [];
 
-	if($req->execute(array(':1' => $genre)))
+	if($req->execute())
 	{
 		while($entry = $req->fetch())
 			array_push($output, $entry['ID']);
