@@ -69,7 +69,7 @@
 				array_push($output, $relative);
 				$outputLength += 1;
 
-				if($outputLength != $nbSuggestions)
+				if($outputLength === $nbSuggestions)
 					break;
 			}
 		}
