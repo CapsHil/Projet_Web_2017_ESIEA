@@ -20,8 +20,6 @@ switch ($method)
 		else
 			$nbResults = $defaultNbTopScores;
 
-		echo $nbResults;
-
 		echo json_encode([
 			'status' => 'success',
 			'scores' => getTopScores($nbResults)
