@@ -8,8 +8,8 @@
           <div class="menu-button options-button" v-bind:class="{ 'disabled': !displayHints }" v-on:click="toggleHints()">{{hintStatus}}</div>
         </div>
         <div class="options-element">
-          <span>{{hintLabel}}</span>
-          <button v-bind:class="{ 'fa fa-arrow-circle-right fa-5x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-5x': arrowButtonTop }" v-on:click="switchTimerPosition()"></button>
+          <span>{{progressbarLabel}}</span>
+          <div class="menu-button" v-bind:class="{ 'fa fa-arrow-circle-right fa-2x': !arrowButtonTop, 'fa fa-arrow-circle-up fa-2x': arrowButtonTop }" v-on:click="switchTimerPosition()"></div>
         </div>
       </div>
       <div v-on:click="startGame()" class="menu-button" :disabled="playing == 1">{{ start }}</div>
@@ -31,6 +31,7 @@
         hintLabel: 'Display 4 answer propositions: ',
         hintStatus: 'Enabled',
         displayHints: true,
+        progressbarLabel: 'Timer position: ',
         arrowButtonTop: true
 
       }
@@ -86,6 +87,9 @@
     border-radius: 5px;
     width: 50%;
     margin: auto;
+    margin-bottom: 20px;
+    padding: 5px;
+    text-align: left;
     }
 
   .menu-button{
