@@ -134,14 +134,28 @@ function getRandomSongs($bdd = null, $nbSongs = 1, $genre = 0)
 	//      increase the odds that the one after it get selected. If too big of a problem, those IDs aren't
 	//      used elsewhere and can be recomputed whenever necessary, as long as the application is down.
 
-	$req = $bdd->prepare('SELECT r1.`ID`
-		FROM `music` AS r1 JOIN
-		   (SELECT (RAND() *
-						 (SELECT MAX(ID)
-							FROM `music` WHERE `genreID` = :1)) AS ID)
-			AS r2
-		WHERE r1.ID >= r2.ID AND r1.`genreID` = :1
-		ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
+	if($genre != 0)
+	{
+		$req = $bdd->prepare('SELECT r1.`ID`
+			FROM `music` AS r1 JOIN
+			   (SELECT (RAND() *
+							 (SELECT MAX(ID)
+								FROM `music` WHERE `genreID` = :1)) AS ID)
+				AS r2
+			WHERE r1.ID >= r2.ID AND r1.`genreID` = :1
+			ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
+	}
+	else
+	{
+		$req = $bdd->prepare('SELECT r1.`ID`
+			FROM `music` AS r1 JOIN
+			   (SELECT (RAND() *
+							 (SELECT MAX(ID)
+								FROM `music`)) AS ID)
+				AS r2
+			WHERE r1.ID >= r2.ID
+			ORDER BY r1.ID ASC LIMIT ' . $nbSongs . ';');
+	}
 
 	$output = [];
 
