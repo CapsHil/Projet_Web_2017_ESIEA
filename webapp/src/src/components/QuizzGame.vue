@@ -130,6 +130,7 @@
         this.skipEnabled = false
         this.displayAnswer = false
         this.wasFirstQuestion = true
+        this.playerScore = 0
       },
       skipTrack () {
         this.sound.stop()
